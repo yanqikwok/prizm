@@ -18,9 +18,11 @@ NOT_ASSESSED_NOTE = (
     "A4 (composition) covers the source-detectable rules — liquid-glass/zone/extension-pack "
     "correctness; holistic composition still benefits from a reviewer. A5 (accessibility) covers "
     "source signals — image text alternatives, icon-only control names, zoom, and colour contrast "
-    "on any pair that resolves from source (held to PRIZM's AA policy, 4.5:1 text). Contrast on "
-    "layout-inherited backgrounds still needs a rendered pass. Spacing and typography remain out "
-    "of scope.")
+    "on any pair that resolves from source, held to PRIZM's own WCAG AA policy (4.5:1 text / 3:1 "
+    "non-text, per PRIZM's audit-contrast). IMPORTANT: a clean A5 contrast result is NOT a full "
+    "WCAG AA guarantee — contrast on layout-inherited backgrounds is invisible to a source scan and "
+    "needs a rendered pass, and A5 does not cover keyboard, focus order, ARIA, or headings. "
+    "Spacing and typography remain out of scope.")
 
 
 def sev_order_key(sev):

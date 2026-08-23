@@ -51,7 +51,7 @@ const AXES: Axis[] = [
     key: "A5",
     name: "Accessibility",
     weight: "10%",
-    question: "Does it meet the accessibility floor?",
+    question: "Does it meet the accessibility floor (WCAG AA)?",
     example:
       "An <img> or JavaFX ImageView with no text alternative; an icon-only control with no label; blocked zoom; a colour pair below AA contrast.",
   },
@@ -444,6 +444,15 @@ export default function AlignmentPage() {
         by the skill; the browser tool doesn&rsquo;t check A4. An axis shown as{" "}
         <code className="rounded-sm bg-bg-muted px-1 py-0.5">n/a</code> means the input had nothing
         to measure for it; it never counts for or against the score.
+      </p>
+      <p className="mt-3 max-w-3xl text-sm text-fg-subtle">
+        <strong className="text-fg">Accessibility &amp; WCAG.</strong> A5 checks the source-visible
+        parts of the <strong>WCAG&nbsp;2.1 AA</strong> floor. Contrast (
+        <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-A03</code>) uses PRIZM&rsquo;s own
+        policy — the one its tokens are CI-verified against:{" "}
+        <strong>4.5:1 for text, 3:1 for non-text</strong>. A clean A5 result is not a full AA pass,
+        though: contrast on layout-inherited backgrounds needs a rendered pass, and A5 doesn&rsquo;t
+        cover keyboard, focus order, ARIA, or heading structure.
       </p>
     </article>
   );
