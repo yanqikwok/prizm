@@ -279,13 +279,60 @@ export default function AlignmentPage() {
         </table>
       </div>
 
+      <details className="mt-4 max-w-3xl rounded-lg border border-border bg-surface p-4 text-sm text-fg-muted">
+        <summary className="cursor-pointer font-medium text-fg">
+          What do finding codes like{" "}
+          <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-T01</code> mean?
+        </summary>
+        <p className="mt-2">
+          Every finding carries a rule ID,{" "}
+          <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-&lt;axis&gt;&lt;number&gt;</code>.
+          The letter is the axis: <strong>T</strong> tokens (A1), <strong>C</strong> components /
+          adoption (A2), <strong>D</strong> drift / fidelity (A3), <strong>A</strong> accessibility
+          (A5).
+        </p>
+        <ul className="mt-2 list-disc space-y-1 pl-5">
+          <li>
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-T01</code> raw Tailwind colour ·{" "}
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">T02</code> hardcoded colour ·{" "}
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">T03</code> arbitrary value ·{" "}
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">T04</code> invented token ·{" "}
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">T05</code> off-token radius
+          </li>
+          <li>
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-C01</code>–
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">C10</code> a hand-rolled element
+            where a PRIZM component exists (button, table, select, dialog, …) ·{" "}
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">C20</code> a native JavaFX control
+            with a Prizm equivalent
+          </li>
+          <li>
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-D01</code> a copied PRIZM
+            component that has drifted from the current version
+          </li>
+          <li>
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-A01</code>/
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">A02</code> image without alt /
+            blocked zoom · <code className="rounded-sm bg-bg-muted px-1 py-0.5">A10</code>/
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">A11</code> JavaFX image or
+            icon-only control without accessible text
+          </li>
+        </ul>
+        <p className="mt-2">
+          An axis marked <code className="rounded-sm bg-bg-muted px-1 py-0.5">n/a</code> means the
+          input had nothing to measure for it (or it needs the full skill) — it doesn&rsquo;t count
+          for or against the score.
+        </p>
+      </details>
+
       {/* Tiers */}
       <h2 className="mt-14 text-2xl font-semibold tracking-tight">Access tiers</h2>
       <p className="mt-3 max-w-3xl text-fg-muted">
-        How much the checker can see depends on how much access you give it. It states which tier it
-        ran in, and a Tier 2 result should not be read as if it were a Tier 1 one. Pasting a
-        component or scanning a repo above are both Tier 1: the source is available, so token use
-        and adoption can be checked directly.
+        How much can be assessed depends on how much access the checker has. The browser tool above
+        has your source but is deliberately partial (no A4, best-effort A3). The authoritative Tier
+        1 result — all five axes — comes from running the skill against the repo; a rendered-only
+        (Tier 2) or screenshot-only (Tier 3) audit sees even less, and should never be read as a
+        Tier 1 one.
       </p>
       <div className="mt-6 overflow-x-auto rounded-lg border border-border">
         <table className="w-full text-sm">

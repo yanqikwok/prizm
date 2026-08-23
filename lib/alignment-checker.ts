@@ -710,7 +710,10 @@ const SNIPPET_TIER_NOTE =
 
 /** Score a single pasted source string. */
 export function runAlignmentScan(source: string): AlignmentResult {
-  return finalize([scanRaw(source)], { tier: "Tier 1 — Source", tierNote: SNIPPET_TIER_NOTE });
+  return finalize([scanRaw(source)], {
+    tier: "Browser check — source",
+    tierNote: SNIPPET_TIER_NOTE,
+  });
 }
 
 /** Score a set of repository files as one aggregate result. */
@@ -732,7 +735,7 @@ export function runRepoScan(
     : "Fidelity (A3) and composition (A4) still need a reviewer or the AI skill.";
 
   return finalize(scans, {
-    tier: "Tier 1 — Repository",
+    tier: "Browser check — repository",
     tierNote: `Scanned ${coverage} from ${meta.repo}${meta.ref ? ` @ ${meta.ref}` : ""}. Token use and component adoption are measured across the whole codebase. ${a3Line}`,
     filesScanned: files.length,
     coverage,
