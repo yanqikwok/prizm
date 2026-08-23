@@ -266,16 +266,52 @@ export default function AlignmentPage() {
           Recommended — install as a plugin (stays up to date)
         </p>
         <p className="mt-1.5 text-sm text-fg-muted">
-          Add the marketplace and install once. Later, one command pulls the newest version — no
-          re-downloading.
+          Install once from the{" "}
+          <code className="rounded-sm bg-bg-muted px-1 py-0.5">prizm-design/prizm</code>{" "}
+          marketplace; later, updates arrive without re-downloading. Works in Claude Code — the
+          desktop app, the terminal, or an IDE extension. (Not the general claude.ai chat app.)
         </p>
-        <pre className="mt-3 overflow-x-auto rounded-md border border-border bg-bg-muted p-3 font-mono text-sm text-fg">
+
+        <p className="mt-3 text-sm font-medium text-fg">Claude Code desktop app (no terminal)</p>
+        <ol className="mt-1.5 list-decimal space-y-1 pl-5 text-sm text-fg-muted">
+          <li>Open the Code tab and open a project folder.</li>
+          <li>
+            Click <span className="font-medium text-fg">+</span> next to the prompt →{" "}
+            <span className="font-medium text-fg">Plugins</span>.
+          </li>
+          <li>
+            Add marketplace{" "}
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">prizm-design/prizm</code>, then in{" "}
+            <span className="font-medium text-fg">Discover</span> find{" "}
+            <span className="font-medium text-fg">prizm-checker</span> and click{" "}
+            <span className="font-medium text-fg">Install</span>.
+          </li>
+        </ol>
+
+        <p className="mt-3 text-sm font-medium text-fg">Terminal or IDE</p>
+        <pre className="mt-1.5 overflow-x-auto rounded-md border border-border bg-bg-muted p-3 font-mono text-sm text-fg">
           <code>{`# in Claude Code
 /plugin marketplace add prizm-design/prizm
 /plugin install prizm-checker@prizm
 
 # later, to update to the newest version:
 /plugin update prizm-checker@prizm`}</code>
+        </pre>
+
+        <p className="mt-3 text-sm font-medium text-fg">Roll it out to a team (auto-install)</p>
+        <p className="mt-1.5 text-sm text-fg-muted">
+          Commit this to a repo&rsquo;s{" "}
+          <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/settings.json</code> and the
+          plugin installs itself when a teammate opens the repo in Claude Code (desktop, terminal,
+          or web) and trusts the folder — no manual steps.
+        </p>
+        <pre className="mt-1.5 overflow-x-auto rounded-md border border-border bg-bg-muted p-3 font-mono text-sm text-fg">
+          <code>{`{
+  "extraKnownMarketplaces": {
+    "prizm": { "source": { "source": "github", "repo": "prizm-design/prizm" } }
+  },
+  "enabledPlugins": { "prizm-checker@prizm": true }
+}`}</code>
         </pre>
 
         <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
