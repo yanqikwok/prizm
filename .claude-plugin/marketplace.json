@@ -10,7 +10,7 @@
       "name": "prizm-checker",
       "source": "./plugins/prizm-checker",
       "description": "The PRIZM Checker — audit a repo across five axes: tokens, adoption, fidelity, composition, and accessibility (A1–A5).",
-      "version": "0.5.0"
+      "version": "0.6.0"
     }
   ]
 }

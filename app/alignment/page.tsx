@@ -292,7 +292,7 @@ export default function AlignmentPage() {
             className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md border border-border-strong bg-bg px-4 text-sm font-medium text-fg transition-colors hover:bg-bg-muted"
           >
             <Download className="h-4 w-4" />
-            Download skill (v0.5.0)
+            Download skill (v0.6.0)
           </a>
           <span className="text-sm text-fg-muted">
             Unzip into <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/skills/</code>{" "}
@@ -445,9 +445,20 @@ export default function AlignmentPage() {
         parts of the <strong>WCAG&nbsp;2.1 AA</strong> floor. Contrast (
         <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-A03</code>) uses PRIZM&rsquo;s own
         policy — the one its tokens are CI-verified against:{" "}
-        <strong>4.5:1 for text, 3:1 for non-text</strong>. A clean A5 result is not a full AA pass,
-        though: contrast on layout-inherited backgrounds needs a rendered pass, and A5 doesn&rsquo;t
-        cover keyboard, focus order, ARIA, or heading structure.
+        <strong>4.5:1 for text, 3:1 for non-text</strong>. A clean source A5 result is not a full AA
+        pass, though: contrast on layout-inherited backgrounds, keyboard, focus order, ARIA, and
+        heading structure only exist once the page renders.
+      </p>
+      <p className="mt-3 max-w-3xl text-sm text-fg-subtle">
+        <strong className="text-fg">For real WCAG, add a rendered pass.</strong> The skill accepts
+        an <strong>axe-core</strong> report (
+        <code className="rounded-sm bg-bg-muted px-1 py-0.5">--rendered-a11y report.json</code>) and
+        folds it into A5 as real WCAG findings, each tagged with its success criterion. It stays
+        air-gapped: run axe on your app in the browser you already have (the offline axe DevTools
+        extension, <code className="rounded-sm bg-bg-muted px-1 py-0.5">@axe-core/cli</code>, or a
+        vendored axe snippet), export the JSON, and pass it in. Even then, automated tools catch
+        only part of WCAG — reading order, meaningful alt text, and keyboard flow still need a
+        human.
       </p>
     </article>
   );

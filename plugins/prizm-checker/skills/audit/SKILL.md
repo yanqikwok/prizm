@@ -14,15 +14,19 @@ never let it read as a judgement of the team.
 
 ## Version
 
-Checker v0.5.0 — web + JavaFX, source-access tier, axes A1–A5, baseline + incremental
+Checker v0.6.0 — web + JavaFX, source-access tier, axes A1–A5, baseline + incremental
 modes, upstream findings routed to an internal file, low-confidence guardrail.
 Source passes: A4 covers the source-detectable composition rules; A5 covers the
 source-detectable accessibility signals INCLUDING colour contrast on any colour
 pair that resolves from source, held to PRIZM's own AA policy (4.5:1 text) via the
-same maths as scripts/audit-contrast.ts. Not yet implemented: contrast on
-layout-inherited backgrounds (needs a rendered pass), holistic composition
-judgement beyond the authored rules, the rendered (no-source) tier, and Figma.
-Say so plainly rather than implying full coverage.
+same maths as scripts/audit-contrast.ts. OPTIONAL rendered A5: pass an axe-core
+JSON report with `--rendered-a11y` and A5 becomes a real rendered WCAG pass
+(inherited contrast, roles, focus), each finding tagged with its success criterion
+— produced offline with the axe DevTools extension, @axe-core/cli, or a vendored
+axe snippet in the machine's existing Chrome. Not yet implemented: holistic
+composition judgement beyond the authored rules, and Figma. Automated axe still
+misses ~half of WCAG — reading order, meaningful alt text, keyboard flow need a
+human. Say so plainly rather than implying full coverage.
 
 ## The five axes
 
@@ -32,7 +36,7 @@ Say so plainly rather than implying full coverage.
 | **A2** Component adoption | Is PRIZM's component used where one exists? | Implemented |
 | **A3** Component fidelity | Is the copied component still the PRIZM component? | Implemented |
 | **A4** Composition & pattern | Is the arrangement on-system? | Source pass — liquid-glass/zone/pack rules (PZ-P01/P06/P10); holistic judgement still needs a reviewer |
-| **A5** Accessibility & contrast | Does the result meet the a11y floor? | Source pass — alt text, icon-only names, zoom (PZ-A01/A02/A10/A11), and contrast on source-resolvable colour pairs held to PRIZM's AA policy (PZ-A03); layout-inherited contrast needs a rendered pass |
+| **A5** Accessibility & contrast | Does the result meet the a11y floor? | Source pass — alt text, icon-only names, zoom (PZ-A01/A02/A10/A11), contrast on source-resolvable pairs at PRIZM's AA policy (PZ-A03). Optional RENDERED pass via `--rendered-a11y <axe.json>` → real WCAG (AXE:* findings, SC-tagged) |
 
 ## Workflow
 

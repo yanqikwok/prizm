@@ -9,10 +9,10 @@ diagnostic tool, not a build gate.
 """
 import argparse, datetime, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import ground_truth, scan_tokens, scan_components, scan_drift, scan_composition, scan_a11y, score, report
+import ground_truth, scan_tokens, scan_components, scan_drift, scan_composition, scan_a11y, axe_import, score, report
 from common import dump, owned_files, changed_files
 
-CHECKER_VERSION = "0.5.0"
+CHECKER_VERSION = "0.6.0"
 MEASURED = ("A1", "A2", "A3", "A4", "A5")
 NOT_ASSESSED_NOTE = (
     "A4 (composition) covers the source-detectable rules — liquid-glass/zone/extension-pack "
@@ -23,6 +23,13 @@ NOT_ASSESSED_NOTE = (
     "WCAG AA guarantee — contrast on layout-inherited backgrounds is invisible to a source scan and "
     "needs a rendered pass, and A5 does not cover keyboard, focus order, ARIA, or headings. "
     "Spacing and typography remain out of scope.")
+RENDERED_A11Y_NOTE = (
+    "A4 (composition) covers the source-detectable rules — liquid-glass/zone/extension-pack "
+    "correctness; holistic composition still benefits from a reviewer. A5 (accessibility) came from "
+    "a RENDERED axe-core pass: real WCAG on the live DOM (contrast on inherited backgrounds, roles, "
+    "names, focus), each finding tagged with its success criterion. Automated axe still catches only "
+    "about a third to half of WCAG issues — meaningful alt text, reading order, and true keyboard "
+    "flow need a human. Spacing and typography remain out of scope.")
 
 
 def sev_order_key(sev):
@@ -71,6 +78,10 @@ def main():
     ap.add_argument("--since", default=None, metavar="GITREF",
                     help="incremental mode: scan only files changed since this git ref. "
                          "This is how the Checker fits a sprint or PR workflow.")
+    ap.add_argument("--rendered-a11y", default=None, metavar="AXE_JSON",
+                    help="path to an axe-core JSON report from a rendered pass. When given, A5 uses "
+                         "these real WCAG results (contrast on inherited backgrounds, roles, focus) "
+                         "instead of the source-only A5 scan.")
     ap.add_argument("--group-depth", type=int, default=2,
                     help="path depth for the per-module breakdown (default 2)")
     ap.add_argument("--max-findings", type=int, default=300,
@@ -105,7 +116,10 @@ def main():
     r2 = scan_components.scan(a.target, gt, a.exclude, owned, only)
     r3 = scan_drift.scan(a.target, gt, r2["vendored"], a.exclude, only)
     r4 = scan_composition.scan(a.target, gt, a.exclude, owned, only)
-    r5 = scan_a11y.scan(a.target, gt, a.exclude, owned, only)
+    if a.rendered_a11y:
+        r5 = axe_import.load(a.rendered_a11y)  # real rendered WCAG supersedes the source A5 scan
+    else:
+        r5 = scan_a11y.scan(a.target, gt, a.exclude, owned, only)
 
     # Scan the PRIZM-owned copies too, but file the results separately. These are
     # deviations in the design system's own code: the product team cannot fix them
@@ -139,7 +153,8 @@ def main():
         "coverage": {"files_scanned": r1["files_scanned"], "prizm_owned_exempt": len(owned),
                      "prizm_copies": r3["copies_checked"], "drifted": r3["copies_drifted"],
                      "components_adopted": r2["adopted"]},
-        "not_assessed_note": NOT_ASSESSED_NOTE, "coverage_line": coverage_line(gt),
+        "not_assessed_note": RENDERED_A11Y_NOTE if a.rendered_a11y else NOT_ASSESSED_NOTE,
+        "coverage_line": coverage_line(gt),
         "mode": mode, "modules": modules, "modules_truncated": modules_truncated,
         "grouped_fixes": [{k: v for k, v in g.items() if k != "example"} |
                           {"example_file": g["example"]["file"],
