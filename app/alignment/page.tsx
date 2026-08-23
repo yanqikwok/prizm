@@ -1,7 +1,7 @@
 import { AlignmentChecker } from "@/components/site/alignment-checker";
 import { CopyBlock } from "@/components/site/copy-block";
 import { withBasePath } from "@/lib/base-path";
-import { ArrowRight, Download, Repeat, ScanLine, Target } from "lucide-react";
+import { Download, Repeat, ScanLine, Target } from "lucide-react";
 import type { ReactNode } from "react";
 
 export const metadata = {
@@ -145,23 +145,103 @@ export default function AlignmentPage() {
       {/* Interactive checker */}
       <h2 className="mt-14 text-2xl font-semibold tracking-tight">Check your code</h2>
       <p className="mt-3 max-w-3xl text-fg-muted">
-        Paste a component for a quick read, or point the checker at a GitHub repository to score the
-        whole codebase. Either way it measures the two axes that source can prove, token use and
-        component adoption, plus the accessibility signals it can see. Everything runs in your
-        browser, and the same code always produces the same score.
+        Paste a component or scan a GitHub repo for an instant read, right in your browser.
       </p>
-      <p className="mt-3 text-sm text-fg-muted">
-        Want all five axes (including fidelity and composition) inside Claude?{" "}
-        <a
-          href="#get-the-skill"
-          className="inline-flex items-center gap-1 font-medium text-accent hover:underline"
-        >
-          Get the PRIZM Checker skill
-          <ArrowRight className="h-3.5 w-3.5" />
-        </a>
-      </p>
+      <div className="mt-4 max-w-3xl rounded-lg border border-warning/40 bg-warning/10 p-4 text-sm text-fg-muted">
+        <span className="font-semibold text-fg">This is a partial check — not all five axes.</span>{" "}
+        In the browser it scores only what source proves: A1 tokens, A2 adoption, A5 accessibility,
+        and a best-effort A3 fidelity when you scan a repo. It can&rsquo;t score A4 composition and
+        isn&rsquo;t the authoritative result.{" "}
+        <a href="#get-the-skill" className="font-medium text-accent hover:underline">
+          Only the PRIZM Checker skill audits all five axes
+        </a>{" "}
+        — it&rsquo;s right below.
+      </div>
       <div className="mt-6">
         <AlignmentChecker />
+      </div>
+
+      {/* Get the skill (the full audit) */}
+      <div
+        id="get-the-skill"
+        className="mt-6 scroll-mt-20 rounded-lg border border-accent/40 bg-accent/5 p-5"
+      >
+        <h3 className="font-semibold">Get all five axes — the PRIZM Checker skill</h3>
+        <p className="mt-1 text-sm text-fg-muted">
+          The full, AI-driven audit for Claude: every axis (including composition), scored across
+          your whole repo. Install once; it stays up to date.
+        </p>
+
+        <p className="mt-4 text-sm font-medium text-fg">Claude Code desktop app (no terminal)</p>
+        <ol className="mt-1.5 list-decimal space-y-1 pl-5 text-sm text-fg-muted">
+          <li>Open the Code tab and open a project folder.</li>
+          <li>
+            Click <span className="font-medium text-fg">+</span> next to the prompt →{" "}
+            <span className="font-medium text-fg">Plugins</span>.
+          </li>
+          <li>
+            Add marketplace{" "}
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">prizm-design/prizm</code>, then in{" "}
+            <span className="font-medium text-fg">Discover</span> find{" "}
+            <span className="font-medium text-fg">prizm-checker</span> and click{" "}
+            <span className="font-medium text-fg">Install</span>.
+          </li>
+        </ol>
+
+        <p className="mt-4 text-sm font-medium text-fg">Terminal or IDE</p>
+        <p className="mt-1.5 text-sm text-fg-muted">First time — paste this into Claude Code:</p>
+        <CopyBlock
+          code={"/plugin marketplace add prizm-design/prizm\n/plugin install prizm-checker@prizm"}
+        />
+        <p className="mt-3 text-sm text-fg-muted">To update later — paste this:</p>
+        <CopyBlock code={"/plugin update prizm-checker@prizm"} />
+
+        <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
+          Roll it out to a team (auto-install)
+        </p>
+        <p className="mt-1.5 text-sm text-fg-muted">
+          Paste this into a repo&rsquo;s{" "}
+          <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/settings.json</code>. The
+          plugin then installs itself when a teammate opens the repo in Claude Code (desktop,
+          terminal, or web) and trusts the folder — no manual steps.
+        </p>
+        <CopyBlock
+          code={`{
+  "extraKnownMarketplaces": {
+    "prizm": { "source": { "source": "github", "repo": "prizm-design/prizm" } }
+  },
+  "enabledPlugins": { "prizm-checker@prizm": true }
+}`}
+        />
+
+        <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
+          Offline / air-gapped — download the folder
+        </p>
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <a
+            href={withBasePath("/prizm-checker.zip")}
+            download
+            className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md border border-border-strong bg-bg px-4 text-sm font-medium text-fg transition-colors hover:bg-bg-muted"
+          >
+            <Download className="h-4 w-4" />
+            Download skill (v0.3.3)
+          </a>
+          <span className="text-sm text-fg-muted">
+            Unzip into <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/skills/</code>{" "}
+            (or <code className="rounded-sm bg-bg-muted px-1 py-0.5">~/.claude/skills/</code>), so
+            you have{" "}
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">
+              .claude/skills/audit/SKILL.md
+            </code>
+            . Re-download to update.
+          </span>
+        </div>
+
+        <p className="mt-6 text-sm text-fg-muted">
+          However you installed it, run it by asking Claude in your product repo (it also triggers
+          automatically when you ask to check alignment):
+        </p>
+        <CopyBlock code={'claude "run the prizm-checker against this repo"'} />
       </div>
 
       {/* Axes */}
@@ -247,122 +327,6 @@ export default function AlignmentPage() {
           </div>
         ))}
       </div>
-
-      {/* Full audit */}
-      <h2 className="mt-14 text-2xl font-semibold tracking-tight">
-        Fidelity, composition, and the full audit
-      </h2>
-      <p className="mt-3 max-w-3xl text-fg-muted">
-        A GitHub scan gives <strong>Fidelity (A3)</strong> a best-effort score: it compares the
-        PRIZM components you copied into your repo against this site&rsquo;s own PRIZM build and
-        flags the ones whose token or variant classes have drifted. It is not pinned to the exact
-        PRIZM version you adopted, so treat it as a signal, not a verdict. A pasted snippet has no
-        repo to compare, so there A3 stays{" "}
-        <code className="rounded-sm bg-bg-muted px-1 py-0.5 text-sm">n/a</code>.{" "}
-        <strong>Composition (A4)</strong> — whether components are put together the way PRIZM
-        intends — is a judgement call and is always{" "}
-        <code className="rounded-sm bg-bg-muted px-1 py-0.5 text-sm">n/a</code> here. For an A3
-        pinned to your adopted commit and a real A4, run the PRIZM Checker skill against the
-        repository.
-      </p>
-
-      {/* Get the skill */}
-      <div
-        id="get-the-skill"
-        className="mt-6 scroll-mt-20 rounded-lg border border-border bg-surface p-5"
-      >
-        <h3 className="font-semibold">Get the PRIZM Checker skill</h3>
-        <p className="mt-1 text-sm text-fg-muted">
-          The full, AI-driven audit for Claude — all five axes, run against your whole repo.
-        </p>
-
-        <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
-          Recommended — install as a plugin (stays up to date)
-        </p>
-        <p className="mt-1.5 text-sm text-fg-muted">
-          Install once from the{" "}
-          <code className="rounded-sm bg-bg-muted px-1 py-0.5">prizm-design/prizm</code>{" "}
-          marketplace; later, updates arrive without re-downloading. Works in Claude Code — the
-          desktop app, the terminal, or an IDE extension. (Not the general claude.ai chat app.)
-        </p>
-
-        <p className="mt-3 text-sm font-medium text-fg">Claude Code desktop app (no terminal)</p>
-        <ol className="mt-1.5 list-decimal space-y-1 pl-5 text-sm text-fg-muted">
-          <li>Open the Code tab and open a project folder.</li>
-          <li>
-            Click <span className="font-medium text-fg">+</span> next to the prompt →{" "}
-            <span className="font-medium text-fg">Plugins</span>.
-          </li>
-          <li>
-            Add marketplace{" "}
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">prizm-design/prizm</code>, then in{" "}
-            <span className="font-medium text-fg">Discover</span> find{" "}
-            <span className="font-medium text-fg">prizm-checker</span> and click{" "}
-            <span className="font-medium text-fg">Install</span>.
-          </li>
-        </ol>
-
-        <p className="mt-4 text-sm font-medium text-fg">Terminal or IDE</p>
-        <p className="mt-1.5 text-sm text-fg-muted">First time — paste this into Claude Code:</p>
-        <CopyBlock
-          code={"/plugin marketplace add prizm-design/prizm\n/plugin install prizm-checker@prizm"}
-        />
-        <p className="mt-3 text-sm text-fg-muted">To update later — paste this:</p>
-        <CopyBlock code={"/plugin update prizm-checker@prizm"} />
-
-        <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
-          Roll it out to a team (auto-install)
-        </p>
-        <p className="mt-1.5 text-sm text-fg-muted">
-          Paste this into a repo&rsquo;s{" "}
-          <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/settings.json</code>. The
-          plugin then installs itself when a teammate opens the repo in Claude Code (desktop,
-          terminal, or web) and trusts the folder — no manual steps.
-        </p>
-        <CopyBlock
-          code={`{
-  "extraKnownMarketplaces": {
-    "prizm": { "source": { "source": "github", "repo": "prizm-design/prizm" } }
-  },
-  "enabledPlugins": { "prizm-checker@prizm": true }
-}`}
-        />
-
-        <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
-          Offline / air-gapped — download the folder
-        </p>
-        <div className="mt-2 flex flex-wrap items-center gap-3">
-          <a
-            href={withBasePath("/prizm-checker.zip")}
-            download
-            className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md border border-border-strong bg-bg px-4 text-sm font-medium text-fg transition-colors hover:bg-bg-muted"
-          >
-            <Download className="h-4 w-4" />
-            Download skill (v0.3.3)
-          </a>
-          <span className="text-sm text-fg-muted">
-            Unzip into <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/skills/</code>{" "}
-            (or <code className="rounded-sm bg-bg-muted px-1 py-0.5">~/.claude/skills/</code>), so
-            you have{" "}
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">
-              .claude/skills/audit/SKILL.md
-            </code>
-            . Re-download to update.
-          </span>
-        </div>
-
-        <p className="mt-6 text-sm text-fg-muted">
-          However you installed it, run it by asking Claude in your product repo (it also triggers
-          automatically when you ask to check alignment):
-        </p>
-        <CopyBlock code={'claude "run the prizm-checker against this repo"'} />
-      </div>
-      <p className="mt-4 max-w-3xl text-sm text-fg-subtle">
-        Agreed exceptions, such as vendored code, generated files, or modules still mid-migration,
-        go in a <code className="rounded-sm bg-bg-muted px-1 py-0.5">prizm-checker.config</code> so
-        they stay out of the headline score. Any exception left undocumented is reported as a
-        finding of its own, so the number stays honest.
-      </p>
     </article>
   );
 }
