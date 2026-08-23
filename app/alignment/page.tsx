@@ -70,7 +70,7 @@ const TIERS: Tier[] = [
     id: "T1",
     name: "Full",
     input: "Repo (optionally a running build)",
-    covers: "A1–A5",
+    covers: "A1–A3 today (A4/A5 pending)",
     claim: "Authoritative — the score can be tracked over time and pinned to a PRIZM SHA.",
   },
   {
@@ -195,14 +195,15 @@ export default function AlignmentPage() {
         Paste a component or scan a GitHub repo for an instant read, right in your browser.
       </p>
       <div className="mt-4 max-w-3xl rounded-lg border border-warning/40 bg-warning/10 p-4 text-sm text-fg-muted">
-        <span className="font-semibold text-fg">This is a partial check — not all five axes.</span>{" "}
-        In the browser it scores only what source proves: A1 tokens, A2 adoption, A5 accessibility,
-        and a best-effort A3 fidelity when you scan a repo. It can&rsquo;t score A4 composition and
-        isn&rsquo;t the authoritative result.{" "}
+        <span className="font-semibold text-fg">This is a quick, partial check.</span> In the
+        browser it scores what source proves: A1 tokens, A2 adoption, source-only A5 accessibility,
+        and a best-effort A3 fidelity when you scan a repo. For the authoritative, whole-repo audit
+        — deterministic and pinned to a PRIZM version —{" "}
         <a href="#get-the-skill" className="font-medium text-accent hover:underline">
-          Only the PRIZM Checker skill audits all five axes
+          install the PRIZM Checker skill
         </a>{" "}
-        — it&rsquo;s right below.
+        below. Composition (A4) isn&rsquo;t automated by either yet, and the skill&rsquo;s A5 pass
+        is still to come — those need a reviewer for now.
       </div>
       <div className="mt-6">
         <AlignmentChecker />
@@ -213,10 +214,12 @@ export default function AlignmentPage() {
         id="get-the-skill"
         className="mt-6 scroll-mt-20 rounded-lg border border-accent/40 bg-accent/5 p-5"
       >
-        <h3 className="font-semibold">Get all five axes — the PRIZM Checker skill</h3>
+        <h3 className="font-semibold">The full audit — the PRIZM Checker skill</h3>
         <p className="mt-1 text-sm text-fg-muted">
-          The full, AI-driven audit for Claude: every axis (including composition), scored across
-          your whole repo. Install once; it stays up to date.
+          The authoritative, whole-repo audit, run by Claude: tokens, adoption, and fidelity (A1–A3)
+          scored deterministically and pinned to a PRIZM version, with per-file findings and a
+          ranked fix list. (Composition A4 and a full accessibility A5 pass aren&rsquo;t automated
+          yet — the report marks them <em>not assessed</em>.) Install once; it stays up to date.
         </p>
 
         <p className="mt-4 text-sm font-medium text-fg">Claude Code desktop app (no terminal)</p>
@@ -330,10 +333,11 @@ export default function AlignmentPage() {
       <h2 className="mt-14 text-2xl font-semibold tracking-tight">Access tiers</h2>
       <p className="mt-3 max-w-3xl text-fg-muted">
         How much can be assessed depends on how much access the checker has. The browser tool above
-        has your source but is deliberately partial (no A4, best-effort A3). The authoritative Tier
-        1 result — all five axes — comes from running the skill against the repo; a rendered-only
-        (Tier 2) or screenshot-only (Tier 3) audit sees even less, and should never be read as a
-        Tier 1 one.
+        has your source but is a quick, partial read. The authoritative Tier 1 audit comes from
+        running the skill against the repo — deterministic and pinned to a PRIZM version. Today that
+        covers A1–A3 (tokens, adoption, fidelity); A4 and A5 need a rendered pass or a reviewer and
+        aren&rsquo;t automated yet. A rendered-only (Tier 2) or screenshot-only (Tier 3) audit sees
+        even less, and should never be read as a Tier 1 one.
       </p>
       <div className="mt-6 overflow-x-auto rounded-lg border border-border">
         <table className="w-full text-sm">

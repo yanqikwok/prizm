@@ -9,7 +9,7 @@
     {
       "name": "prizm-checker",
       "source": "./plugins/prizm-checker",
-      "description": "The full PRIZM Checker — audit a repo for alignment across all five axes.",
+      "description": "The PRIZM Checker — audit a repo for alignment: tokens, adoption, and fidelity (A1–A3) today; composition and accessibility pending.",
       "version": "0.3.3"
     }
   ]
