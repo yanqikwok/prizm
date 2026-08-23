@@ -102,6 +102,53 @@ const BANDS: Band[] = [
   { range: "< 50", name: "Off-system", tone: "text-danger" },
 ];
 
+interface CodeRow {
+  code: string;
+  axis: string;
+  flags: string;
+}
+
+const CODES: CodeRow[] = [
+  {
+    code: "PZ-T01",
+    axis: "A1 · Tokens",
+    flags: "Raw Tailwind colour class (e.g. bg-slate-800) instead of a token",
+  },
+  {
+    code: "PZ-T02",
+    axis: "A1 · Tokens",
+    flags: "Hardcoded colour literal — #hex, rgb(), or oklch()",
+  },
+  { code: "PZ-T03", axis: "A1 · Tokens", flags: "Arbitrary colour value, e.g. bg-[#00d3f2]" },
+  { code: "PZ-T04", axis: "A1 · Tokens", flags: "Invented token that isn't in PRIZM's vocabulary" },
+  { code: "PZ-T05", axis: "A1 · Tokens", flags: "Off-token corner radius, e.g. rounded-[5px]" },
+  { code: "PZ-C01", axis: "A2 · Adoption", flags: 'role="button" on a non-button — use Button' },
+  {
+    code: "PZ-C02–C10",
+    axis: "A2 · Adoption",
+    flags:
+      "A hand-rolled element where a PRIZM component exists (table, select, dialog, checkbox, radio, slider, progress, accordion, button)",
+  },
+  {
+    code: "PZ-C20",
+    axis: "A2 · Adoption",
+    flags: "A native JavaFX control with a Prizm* equivalent",
+  },
+  {
+    code: "PZ-D01",
+    axis: "A3 · Fidelity",
+    flags: "A copied PRIZM component that has drifted from the current version",
+  },
+  { code: "PZ-A01", axis: "A5 · Accessibility", flags: "Image with no alt text" },
+  { code: "PZ-A02", axis: "A5 · Accessibility", flags: "Viewport blocks zoom" },
+  { code: "PZ-A10", axis: "A5 · Accessibility", flags: "JavaFX ImageView with no accessible text" },
+  {
+    code: "PZ-A11",
+    axis: "A5 · Accessibility",
+    flags: "Icon-only control with no accessible name",
+  },
+];
+
 function Feature({
   icon,
   title,
@@ -279,52 +326,6 @@ export default function AlignmentPage() {
         </table>
       </div>
 
-      <details className="mt-4 max-w-3xl rounded-lg border border-border bg-surface p-4 text-sm text-fg-muted">
-        <summary className="cursor-pointer font-medium text-fg">
-          What do finding codes like{" "}
-          <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-T01</code> mean?
-        </summary>
-        <p className="mt-2">
-          Every finding carries a rule ID,{" "}
-          <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-&lt;axis&gt;&lt;number&gt;</code>.
-          The letter is the axis: <strong>T</strong> tokens (A1), <strong>C</strong> components /
-          adoption (A2), <strong>D</strong> drift / fidelity (A3), <strong>A</strong> accessibility
-          (A5).
-        </p>
-        <ul className="mt-2 list-disc space-y-1 pl-5">
-          <li>
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-T01</code> raw Tailwind colour ·{" "}
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">T02</code> hardcoded colour ·{" "}
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">T03</code> arbitrary value ·{" "}
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">T04</code> invented token ·{" "}
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">T05</code> off-token radius
-          </li>
-          <li>
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-C01</code>–
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">C10</code> a hand-rolled element
-            where a PRIZM component exists (button, table, select, dialog, …) ·{" "}
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">C20</code> a native JavaFX control
-            with a Prizm equivalent
-          </li>
-          <li>
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-D01</code> a copied PRIZM
-            component that has drifted from the current version
-          </li>
-          <li>
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-A01</code>/
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">A02</code> image without alt /
-            blocked zoom · <code className="rounded-sm bg-bg-muted px-1 py-0.5">A10</code>/
-            <code className="rounded-sm bg-bg-muted px-1 py-0.5">A11</code> JavaFX image or
-            icon-only control without accessible text
-          </li>
-        </ul>
-        <p className="mt-2">
-          An axis marked <code className="rounded-sm bg-bg-muted px-1 py-0.5">n/a</code> means the
-          input had nothing to measure for it (or it needs the full skill) — it doesn&rsquo;t count
-          for or against the score.
-        </p>
-      </details>
-
       {/* Tiers */}
       <h2 className="mt-14 text-2xl font-semibold tracking-tight">Access tiers</h2>
       <p className="mt-3 max-w-3xl text-fg-muted">
@@ -374,6 +375,48 @@ export default function AlignmentPage() {
           </div>
         ))}
       </div>
+
+      {/* Finding codes */}
+      <h2 className="mt-14 text-2xl font-semibold tracking-tight">Finding codes</h2>
+      <p className="mt-3 max-w-3xl text-fg-muted">
+        Every finding carries a rule ID like{" "}
+        <code className="rounded-sm bg-bg-muted px-1 py-0.5 text-sm">PZ-T01</code>, shaped{" "}
+        <code className="rounded-sm bg-bg-muted px-1 py-0.5 text-sm">
+          PZ-&lt;axis&gt;&lt;number&gt;
+        </code>
+        . The letter marks the axis — <strong>T</strong> tokens (A1), <strong>C</strong> components
+        / adoption (A2), <strong>D</strong> drift / fidelity (A3), <strong>A</strong> accessibility
+        (A5) — and the number is the specific rule. The full skill uses the same IDs, so a code
+        means the same thing everywhere.
+      </p>
+      <div className="mt-6 overflow-x-auto rounded-lg border border-border">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border bg-bg-muted text-left text-xs uppercase tracking-wider text-fg-subtle">
+              <th className="px-4 py-2.5 font-semibold">Code</th>
+              <th className="px-4 py-2.5 font-semibold">Axis</th>
+              <th className="px-4 py-2.5 font-semibold">What it flags</th>
+            </tr>
+          </thead>
+          <tbody>
+            {CODES.map((c) => (
+              <tr key={c.code} className="border-b border-border last:border-0">
+                <td className="whitespace-nowrap px-4 py-3 font-mono text-xs font-semibold text-fg">
+                  {c.code}
+                </td>
+                <td className="whitespace-nowrap px-4 py-3 text-fg-muted">{c.axis}</td>
+                <td className="px-4 py-3 text-fg-muted">{c.flags}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-4 max-w-3xl text-sm text-fg-subtle">
+        A4 composition has no codes here — the browser checker doesn&rsquo;t score it. And an axis
+        shown as <code className="rounded-sm bg-bg-muted px-1 py-0.5">n/a</code> means the input had
+        nothing to measure for it (or it needs the full skill); it never counts for or against the
+        score.
+      </p>
     </article>
   );
 }
