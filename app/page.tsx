@@ -149,6 +149,39 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Alignment checker */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+          <p className="text-xs font-semibold uppercase tracking-wider text-fg-subtle">Alignment</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+            Check how on-system you are
+          </h2>
+          <p className="mt-3 max-w-2xl text-fg-muted">
+            The PRIZM Checker scores a product against PRIZM across five axes — tokens, adoption,
+            fidelity, composition, and accessibility — and hands back a ranked fix list, not just a
+            grade. Paste a component for an instant read, scan a GitHub repo, or install the skill
+            for the full audit inside Claude.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {["Tokens", "Adoption", "Fidelity", "Composition", "Accessibility"].map((a) => (
+              <span
+                key={a}
+                className="rounded-full border border-border bg-surface px-3 py-1 text-sm text-fg-muted"
+              >
+                {a}
+              </span>
+            ))}
+          </div>
+          <Link
+            href="/alignment"
+            className="mt-8 inline-flex h-10 items-center gap-2 rounded-md bg-accent px-5 text-sm font-medium text-accent-fg transition-colors hover:bg-accent-hover"
+          >
+            Open the checker
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

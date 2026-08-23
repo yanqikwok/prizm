@@ -381,6 +381,16 @@ function Results({
           })()
         )}
       </div>
+
+      {/* Reminder: this is the partial browser check */}
+      <div className="border-t border-border bg-accent/5 px-5 py-4 text-sm text-fg-muted">
+        This is the quick browser check — it can only score what source proves. For the full
+        five-axis audit (A1–A5, including composition and real WCAG accessibility) across your whole
+        repo,{" "}
+        <a href="#get-the-skill" className="font-medium text-accent hover:underline">
+          install the PRIZM Checker skill →
+        </a>
+      </div>
     </>
   );
 }
