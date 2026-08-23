@@ -1,4 +1,5 @@
 import { AlignmentChecker } from "@/components/site/alignment-checker";
+import { CopyBlock } from "@/components/site/copy-block";
 import { withBasePath } from "@/lib/base-path";
 import { Download, Repeat, ScanLine, Target } from "lucide-react";
 import type { ReactNode } from "react";
@@ -288,33 +289,33 @@ export default function AlignmentPage() {
           </li>
         </ol>
 
-        <p className="mt-3 text-sm font-medium text-fg">Terminal or IDE</p>
-        <pre className="mt-1.5 overflow-x-auto rounded-md border border-border bg-bg-muted p-3 font-mono text-sm text-fg">
-          <code>{`# in Claude Code
-/plugin marketplace add prizm-design/prizm
-/plugin install prizm-checker@prizm
+        <p className="mt-4 text-sm font-medium text-fg">Terminal or IDE</p>
+        <p className="mt-1.5 text-sm text-fg-muted">First time — paste this into Claude Code:</p>
+        <CopyBlock
+          code={"/plugin marketplace add prizm-design/prizm\n/plugin install prizm-checker@prizm"}
+        />
+        <p className="mt-3 text-sm text-fg-muted">To update later — paste this:</p>
+        <CopyBlock code={"/plugin update prizm-checker@prizm"} />
 
-# later, to update to the newest version:
-/plugin update prizm-checker@prizm`}</code>
-        </pre>
-
-        <p className="mt-3 text-sm font-medium text-fg">Roll it out to a team (auto-install)</p>
-        <p className="mt-1.5 text-sm text-fg-muted">
-          Commit this to a repo&rsquo;s{" "}
-          <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/settings.json</code> and the
-          plugin installs itself when a teammate opens the repo in Claude Code (desktop, terminal,
-          or web) and trusts the folder — no manual steps.
+        <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
+          Roll it out to a team (auto-install)
         </p>
-        <pre className="mt-1.5 overflow-x-auto rounded-md border border-border bg-bg-muted p-3 font-mono text-sm text-fg">
-          <code>{`{
+        <p className="mt-1.5 text-sm text-fg-muted">
+          Paste this into a repo&rsquo;s{" "}
+          <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/settings.json</code>. The
+          plugin then installs itself when a teammate opens the repo in Claude Code (desktop,
+          terminal, or web) and trusts the folder — no manual steps.
+        </p>
+        <CopyBlock
+          code={`{
   "extraKnownMarketplaces": {
     "prizm": { "source": { "source": "github", "repo": "prizm-design/prizm" } }
   },
   "enabledPlugins": { "prizm-checker@prizm": true }
-}`}</code>
-        </pre>
+}`}
+        />
 
-        <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
+        <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
           Offline / air-gapped — download the folder
         </p>
         <div className="mt-2 flex flex-wrap items-center gap-3">
@@ -337,15 +338,11 @@ export default function AlignmentPage() {
           </span>
         </div>
 
-        <p className="mt-5 text-sm text-fg-muted">
-          Then, in your product repo, ask Claude to run it:
+        <p className="mt-6 text-sm text-fg-muted">
+          However you installed it, run it by asking Claude in your product repo (it also triggers
+          automatically when you ask to check alignment):
         </p>
-        <pre className="mt-2 overflow-x-auto rounded-md border border-border bg-bg-muted p-3 font-mono text-sm text-fg">
-          <code>{`claude "run the prizm-checker against this repo"
-
-# Scores every file across all five axes, emits a Markdown + HTML
-# report and a JSON sidecar so alignment can be tracked over time.`}</code>
-        </pre>
+        <CopyBlock code={'claude "run the prizm-checker against this repo"'} />
       </div>
       <p className="mt-4 max-w-3xl text-sm text-fg-subtle">
         Agreed exceptions, such as vendored code, generated files, or modules still mid-migration,
