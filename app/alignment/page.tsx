@@ -254,10 +254,11 @@ export default function AlignmentPage() {
         </ol>
 
         <p className="mt-4 text-sm font-medium text-fg">Terminal or IDE</p>
-        <p className="mt-1.5 text-sm text-fg-muted">First time — paste this into Claude Code:</p>
-        <CopyBlock
-          code={"/plugin marketplace add prizm-design/prizm\n/plugin install prizm-checker@prizm"}
-        />
+        <p className="mt-1.5 text-sm text-fg-muted">
+          First time — add the marketplace, then install <strong>prizm-checker</strong> from the
+          plugin manager it opens:
+        </p>
+        <CopyBlock code={"/plugin marketplace add prizm-design/prizm"} />
         <p className="mt-3 text-sm text-fg-muted">To update later — paste this:</p>
         <CopyBlock code={"/plugin update prizm-checker@prizm"} />
 
