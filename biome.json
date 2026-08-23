@@ -3,7 +3,18 @@
   "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["node_modules", ".next", "out", "public/fonts", "javafx/build/**", "javafx/src/**"]
+    "ignore": [
+      "node_modules",
+      ".next",
+      "out",
+      "public/fonts",
+      "javafx/build/**",
+      "javafx/src/**",
+      "lib/alignment-ground-truth.generated.ts",
+      "lib/prizm-baseline.generated.ts",
+      "public/**",
+      "plugins/**"
+    ]
   },
   "formatter": {
     "enabled": true,

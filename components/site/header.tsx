@@ -55,6 +55,7 @@ const NAV = [
       { label: "Templates", href: "/enterprise/templates" },
     ],
   },
+  { label: "Alignment", href: "/alignment" },
 ];
 
 export function Header() {

@@ -33,6 +33,9 @@ const IGNORE_DIRS = new Set([
   ".pnpm-store-offline",
   "scripts",
   "llms",
+  // The bundled PRIZM Checker skill/plugin (incl. deliberately off-system
+  // fixtures). It ships as a plugin, not as part of the docs site.
+  "plugins",
 ]);
 
 // Scan only source code. Markdown files contain example `<Link>` / `<a>` tags

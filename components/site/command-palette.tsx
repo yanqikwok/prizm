@@ -12,7 +12,7 @@ import {
 import { COMPONENTS } from "@/lib/components-registry";
 import { cn } from "@/lib/utils";
 import { Dialog as BaseDialog } from "@base-ui-components/react/dialog";
-import { ArrowRight, BookOpen, FileText } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, Target } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type ReactNode, useEffect, useMemo } from "react";
 
@@ -214,6 +214,24 @@ const DOC_ENTRIES: SearchEntry[] = [
     href: "/docs/air-gap",
     icon: <BookOpen className="h-4 w-4" />,
     keywords: ["docs", "offline", "airgap"],
+  },
+  {
+    id: "doc:alignment",
+    group: "Docs",
+    name: "Alignment",
+    description: "Score how aligned a product is to PRIZM — the checker + methodology.",
+    href: "/alignment",
+    icon: <Target className="h-4 w-4" />,
+    keywords: [
+      "alignment",
+      "checker",
+      "audit",
+      "score",
+      "tokens",
+      "drift",
+      "compliance",
+      "on-system",
+    ],
   },
 ];
 

@@ -52,3 +52,6 @@ prizm-docs-*.tar.gz
 # internal working docs for AI sessions building PRIZM itself
 # (PRIZM.md, llms.txt, and llms/ are public AI artefacts and stay tracked)
 AI_HANDOFF.md
+
+# Generated skill download (built from plugins/prizm-checker by scripts/package-skill.ts)
+public/prizm-checker.zip

@@ -1,0 +1,16 @@
+{
+  "name": "prizm",
+  "owner": { "name": "DSTA — PRIZM", "url": "https://github.com/prizm-design/prizm" },
+  "metadata": {
+    "description": "Plugins for the PRIZM design system.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "prizm-checker",
+      "source": "./plugins/prizm-checker",
+      "description": "The full PRIZM Checker — audit a repo for alignment across all five axes.",
+      "version": "0.3.2"
+    }
+  ]
+}

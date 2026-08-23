@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto");
+
+:root {
+  --prizm-color-brand: #ff5722;
+  --prizm-color-panel-tint: oklch(30% 0.05 250);
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  background: #0f172b;
+  color: rgb(226, 232, 240);
+}
+
+.panel {
+  background: var(--prizm-color-surface);
+  border: 1px solid #314158;
+  border-radius: 7px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  color: var(--prizm-color-text-primary);
+}
+
+.alert-critical { background: #e7000b; color: #fff; }

@@ -1,0 +1,32 @@
+/* ============================================================
+   RC3 — Light mode (extension pack override on C3)
+   ------------------------------------------------------------
+   Thin override layer. Activates on top of C3 light when an RC3
+   surface is in scope (data-pack="rc3"). Overrides ONLY the
+   accent semantic tokens — surface, fg, border, status, and
+   glass tokens all inherit from C3 light verbatim.
+
+   Hue: red-orange ~32 (working lean from /c3/rc3/colours).
+   Values verified against WCAG AA for accent / accent-fg /
+   accent-hover pairings on C3 light bg + surface.
+   ============================================================ */
+
+[data-zone="c3"][data-mode="light"][data-pack="rc3"] {
+  /* RC3 red-orange ramp */
+  --prizm-rc3-50: oklch(97% 0.024 32);
+  --prizm-rc3-100: oklch(93% 0.06 32);
+  --prizm-rc3-200: oklch(86% 0.118 32);
+  --prizm-rc3-300: oklch(78% 0.165 32);
+  --prizm-rc3-400: oklch(71% 0.195 32);
+  --prizm-rc3-500: oklch(63% 0.2 32);
+  --prizm-rc3-600: oklch(55% 0.18 31);
+  --prizm-rc3-700: oklch(47% 0.15 30);
+  --prizm-rc3-800: oklch(40% 0.12 29);
+  --prizm-rc3-900: oklch(33% 0.092 28);
+  --prizm-rc3-950: oklch(25% 0.065 27);
+
+  /* Accent semantic overrides — everything else inherits C3 light */
+  --prizm-color-accent: var(--prizm-rc3-700);
+  --prizm-color-accent-fg: oklch(100% 0 0);
+  --prizm-color-accent-hover: var(--prizm-rc3-800);
+}

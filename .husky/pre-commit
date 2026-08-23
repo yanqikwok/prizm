@@ -6,3 +6,28 @@
 # Bypass with `git commit --no-verify` if you genuinely need to.
 
 pnpm exec lint-staged && pnpm typecheck && pnpm audit:components
+
+# Keep the Alignment checker in sync with PRIZM. If this commit changed PRIZM's
+# components, tokens, or extension packs, regenerate the checker's generated files
+# (ground truth + A3 fidelity baseline), stage them, and tell the committer.
+GT="lib/alignment-ground-truth.generated.ts"
+BASE="lib/prizm-baseline.generated.ts"
+gt_before=$(git hash-object "$GT" 2>/dev/null || echo none)
+base_before=$(git hash-object "$BASE" 2>/dev/null || echo none)
+if pnpm generate:alignment >/dev/null 2>&1; then
+  changed=""
+  [ "$gt_before" != "$(git hash-object "$GT")" ] && changed="$changed $GT"
+  [ "$base_before" != "$(git hash-object "$BASE")" ] && changed="$changed $BASE"
+  if [ -n "$changed" ]; then
+    git add $changed
+    echo ""
+    echo "ℹ  PRIZM changed — the Alignment checker was updated to match."
+    echo "   Regenerated and staged:$changed"
+    echo "   Included in this commit so the checker stays in sync."
+    echo ""
+  fi
+else
+  echo "✗ Could not regenerate the Alignment checker."
+  echo "  Run 'pnpm generate:alignment' and fix the error before committing."
+  exit 1
+fi
