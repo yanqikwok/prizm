@@ -1,5 +1,5 @@
 ---
-name: prizm-checker
+name: audit
 description: Audit a prototype or product for alignment with the PRIZM design system and produce a diagnostic report with a % alignment score. Use when the user asks to check, audit, score, or assess how aligned a product, prototype, repo, or screen is to PRIZM — or mentions design-system drift, token compliance, off-system colours, hand-rolled components, or "how on-system is this". Covers React/Next web products and JavaFX thick clients.
 ---
 

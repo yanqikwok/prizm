@@ -1,7 +1,7 @@
 {
   "name": "prizm-checker",
   "description": "Audit a product for alignment with the PRIZM design system and produce a diagnostic report with a % alignment score across five axes (tokens, adoption, fidelity, composition, accessibility). Covers React/Next web products and JavaFX thick clients.",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "author": { "name": "DSTA — PRIZM" },
   "homepage": "https://github.com/prizm-design/prizm",
   "keywords": ["prizm", "design-system", "audit", "alignment", "tokens", "accessibility"]

@@ -324,14 +324,14 @@ export default function AlignmentPage() {
             className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md border border-border-strong bg-bg px-4 text-sm font-medium text-fg transition-colors hover:bg-bg-muted"
           >
             <Download className="h-4 w-4" />
-            Download skill (v0.3.2)
+            Download skill (v0.3.3)
           </a>
           <span className="text-sm text-fg-muted">
             Unzip into <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/skills/</code>{" "}
             (or <code className="rounded-sm bg-bg-muted px-1 py-0.5">~/.claude/skills/</code>), so
             you have{" "}
             <code className="rounded-sm bg-bg-muted px-1 py-0.5">
-              .claude/skills/prizm-checker/SKILL.md
+              .claude/skills/audit/SKILL.md
             </code>
             . Re-download to update.
           </span>
