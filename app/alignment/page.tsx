@@ -1,7 +1,7 @@
 import { AlignmentChecker } from "@/components/site/alignment-checker";
 import { CopyBlock } from "@/components/site/copy-block";
 import { withBasePath } from "@/lib/base-path";
-import { Download, Repeat, ScanLine, Target } from "lucide-react";
+import { ArrowRight, Download, Repeat, ScanLine, Target } from "lucide-react";
 import type { ReactNode } from "react";
 
 export const metadata = {
@@ -150,6 +150,16 @@ export default function AlignmentPage() {
         component adoption, plus the accessibility signals it can see. Everything runs in your
         browser, and the same code always produces the same score.
       </p>
+      <p className="mt-3 text-sm text-fg-muted">
+        Want all five axes (including fidelity and composition) inside Claude?{" "}
+        <a
+          href="#get-the-skill"
+          className="inline-flex items-center gap-1 font-medium text-accent hover:underline"
+        >
+          Get the PRIZM Checker skill
+          <ArrowRight className="h-3.5 w-3.5" />
+        </a>
+      </p>
       <div className="mt-6">
         <AlignmentChecker />
       </div>
@@ -257,7 +267,10 @@ export default function AlignmentPage() {
       </p>
 
       {/* Get the skill */}
-      <div className="mt-6 rounded-lg border border-border bg-surface p-5">
+      <div
+        id="get-the-skill"
+        className="mt-6 scroll-mt-20 rounded-lg border border-border bg-surface p-5"
+      >
         <h3 className="font-semibold">Get the PRIZM Checker skill</h3>
         <p className="mt-1 text-sm text-fg-muted">
           The full, AI-driven audit for Claude — all five axes, run against your whole repo.
