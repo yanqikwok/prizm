@@ -258,6 +258,19 @@ export default function AlignmentPage() {
             <span className="font-medium text-fg">prizm-checker</span> and click{" "}
             <span className="font-medium text-fg">Install</span>.
           </li>
+          <li>
+            Keep it up to date automatically — add this to the repo&rsquo;s{" "}
+            <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/settings.json</code> so it
+            installs and updates on open, with no plugin commands (works in cloud sessions too):
+            <CopyBlock
+              code={`{
+  "extraKnownMarketplaces": {
+    "prizm": { "source": { "source": "github", "repo": "prizm-design/prizm" } }
+  },
+  "enabledPlugins": { "prizm-checker@prizm": true }
+}`}
+            />
+          </li>
         </ol>
 
         <p className="mt-4 text-sm font-medium text-fg">Terminal or IDE</p>
@@ -268,24 +281,6 @@ export default function AlignmentPage() {
         <CopyBlock code={"/plugin marketplace add prizm-design/prizm"} />
         <p className="mt-3 text-sm text-fg-muted">To update later — paste this:</p>
         <CopyBlock code={"/plugin update prizm-checker@prizm"} />
-
-        <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
-          Roll it out to a team (auto-install)
-        </p>
-        <p className="mt-1.5 text-sm text-fg-muted">
-          Paste this into a repo&rsquo;s{" "}
-          <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/settings.json</code>. The
-          plugin then installs itself when a teammate opens the repo in Claude Code (desktop,
-          terminal, or web) and trusts the folder — no manual steps.
-        </p>
-        <CopyBlock
-          code={`{
-  "extraKnownMarketplaces": {
-    "prizm": { "source": { "source": "github", "repo": "prizm-design/prizm" } }
-  },
-  "enabledPlugins": { "prizm-checker@prizm": true }
-}`}
-        />
 
         <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
           Offline / air-gapped — download the folder
