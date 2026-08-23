@@ -191,7 +191,7 @@ background:{p['surface']};margin-top:12px}}
   <div class="band">{s["band"]}</div></div>
   <div style="flex:1">
     <div class="meta">
-      <div><b>PRIZM</b><br>{ctx["ground_truth"]["prizm"]["version"]} @ {ctx["ground_truth"]["prizm"]["sha"][:8]}</div>
+      <div><b>PRIZM</b><br>{ctx["ground_truth"]["prizm"]["version"]}</div>
       <div><b>Access tier</b><br>{ctx["tier"]}</div>
       <div><b>Files scanned</b><br>{cov["files_scanned"]}</div>
       <div><b>Checker</b><br>v{ctx["checker_version"]}</div>
@@ -235,8 +235,8 @@ def render_markdown(ctx):
     L = [f'# PRIZM alignment report — {ctx["product"]}', "",
          f'**Overall:** {s["overall"]}% · {s["band"]}'
          + ("  \n> **Low confidence.** " + s["caution"] if s.get("caution") else "") + "  ",
-         f'**PRIZM:** {ctx["ground_truth"]["prizm"]["version"]} @ '
-         f'{ctx["ground_truth"]["prizm"]["sha"][:8]} · **Checker:** v{ctx["checker_version"]} · '
+         f'**PRIZM:** {ctx["ground_truth"]["prizm"]["version"]} · '
+         f'**Checker:** v{ctx["checker_version"]} · '
          f'**Tier:** {ctx["tier"]} · **Scope:** {ctx.get("mode", "full repo")} · '
          f'**Date:** {ctx["date"]}', "",
          "## Axis breakdown", "", "| Axis | Score | Weight | Detail |", "|---|---|---|---|"]
