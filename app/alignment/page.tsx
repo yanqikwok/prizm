@@ -70,7 +70,7 @@ const TIERS: Tier[] = [
     id: "T1",
     name: "Full",
     input: "Repo (optionally a running build)",
-    covers: "A1–A3 today (A4/A5 pending)",
+    covers: "A1–A5 (contrast needs a rendered pass)",
     claim: "Authoritative — the score can be tracked over time and pinned to a PRIZM SHA.",
   },
   {
@@ -139,6 +139,21 @@ const CODES: CodeRow[] = [
     axis: "A3 · Fidelity",
     flags: "A copied PRIZM component that has drifted from the current version",
   },
+  {
+    code: "PZ-P01",
+    axis: "A4 · Composition",
+    flags: "Liquid-glass (a C3-only treatment) used in product code",
+  },
+  {
+    code: "PZ-P06",
+    axis: "A4 · Composition",
+    flags: "Conflicting product zones declared in one file",
+  },
+  {
+    code: "PZ-P10",
+    axis: "A4 · Composition",
+    flags: "An extension pack used without its activation marker",
+  },
   { code: "PZ-A01", axis: "A5 · Accessibility", flags: "Image with no alt text" },
   { code: "PZ-A02", axis: "A5 · Accessibility", flags: "Viewport blocks zoom" },
   { code: "PZ-A10", axis: "A5 · Accessibility", flags: "JavaFX ImageView with no accessible text" },
@@ -196,14 +211,13 @@ export default function AlignmentPage() {
       </p>
       <div className="mt-4 max-w-3xl rounded-lg border border-warning/40 bg-warning/10 p-4 text-sm text-fg-muted">
         <span className="font-semibold text-fg">This is a quick, partial check.</span> In the
-        browser it scores what source proves: A1 tokens, A2 adoption, source-only A5 accessibility,
-        and a best-effort A3 fidelity when you scan a repo. For the authoritative, whole-repo audit
-        — deterministic and pinned to a PRIZM version —{" "}
+        browser it scores A1 tokens, A2 adoption, source-only A5 accessibility, and a best-effort A3
+        fidelity when you scan a repo — but not A4 composition. For the authoritative, whole-repo
+        audit of all five axes (A1–A5), deterministic and pinned to a PRIZM version,{" "}
         <a href="#get-the-skill" className="font-medium text-accent hover:underline">
           install the PRIZM Checker skill
         </a>{" "}
-        below. Composition (A4) isn&rsquo;t automated by either yet, and the skill&rsquo;s A5 pass
-        is still to come — those need a reviewer for now.
+        below. (Colour contrast still needs a rendered pass either way.)
       </div>
       <div className="mt-6">
         <AlignmentChecker />
@@ -214,12 +228,13 @@ export default function AlignmentPage() {
         id="get-the-skill"
         className="mt-6 scroll-mt-20 rounded-lg border border-accent/40 bg-accent/5 p-5"
       >
-        <h3 className="font-semibold">The full audit — the PRIZM Checker skill</h3>
+        <h3 className="font-semibold">The full five-axis audit — the PRIZM Checker skill</h3>
         <p className="mt-1 text-sm text-fg-muted">
-          The authoritative, whole-repo audit, run by Claude: tokens, adoption, and fidelity (A1–A3)
-          scored deterministically and pinned to a PRIZM version, with per-file findings and a
-          ranked fix list. (Composition A4 and a full accessibility A5 pass aren&rsquo;t automated
-          yet — the report marks them <em>not assessed</em>.) Install once; it stays up to date.
+          The authoritative, whole-repo audit, run by Claude: tokens, adoption, fidelity,
+          composition, and accessibility (A1–A5) scored deterministically and pinned to a PRIZM
+          version, with per-file findings and a ranked fix list. (Colour contrast still needs a
+          rendered pass; deeper composition judgement still benefits from a reviewer.) Install once;
+          it stays up to date.
         </p>
 
         <p className="mt-4 text-sm font-medium text-fg">Claude Code desktop app (no terminal)</p>
@@ -274,7 +289,7 @@ export default function AlignmentPage() {
             className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md border border-border-strong bg-bg px-4 text-sm font-medium text-fg transition-colors hover:bg-bg-muted"
           >
             <Download className="h-4 w-4" />
-            Download skill (v0.3.3)
+            Download skill (v0.4.0)
           </a>
           <span className="text-sm text-fg-muted">
             Unzip into <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/skills/</code>{" "}
@@ -334,10 +349,10 @@ export default function AlignmentPage() {
       <p className="mt-3 max-w-3xl text-fg-muted">
         How much can be assessed depends on how much access the checker has. The browser tool above
         has your source but is a quick, partial read. The authoritative Tier 1 audit comes from
-        running the skill against the repo — deterministic and pinned to a PRIZM version. Today that
-        covers A1–A3 (tokens, adoption, fidelity); A4 and A5 need a rendered pass or a reviewer and
-        aren&rsquo;t automated yet. A rendered-only (Tier 2) or screenshot-only (Tier 3) audit sees
-        even less, and should never be read as a Tier 1 one.
+        running the skill against the repo — deterministic and pinned to a PRIZM version. It covers
+        all five axes (A1–A5) from source; only colour contrast still needs a rendered pass, and
+        holistic composition still benefits from a reviewer. A rendered-only (Tier 2) or
+        screenshot-only (Tier 3) audit sees even less, and should never be read as a Tier 1 one.
       </p>
       <div className="mt-6 overflow-x-auto rounded-lg border border-border">
         <table className="w-full text-sm">
@@ -389,9 +404,9 @@ export default function AlignmentPage() {
           PZ-&lt;axis&gt;&lt;number&gt;
         </code>
         . The letter marks the axis — <strong>T</strong> tokens (A1), <strong>C</strong> components
-        / adoption (A2), <strong>D</strong> drift / fidelity (A3), <strong>A</strong> accessibility
-        (A5) — and the number is the specific rule. The full skill uses the same IDs, so a code
-        means the same thing everywhere.
+        / adoption (A2), <strong>D</strong> drift / fidelity (A3), <strong>P</strong> composition
+        (A4), <strong>A</strong> accessibility (A5) — and the number is the specific rule. The skill
+        uses the same IDs, so a code means the same thing everywhere.
       </p>
       <div className="mt-6 overflow-x-auto rounded-lg border border-border">
         <table className="w-full text-sm">
@@ -416,10 +431,10 @@ export default function AlignmentPage() {
         </table>
       </div>
       <p className="mt-4 max-w-3xl text-sm text-fg-subtle">
-        A4 composition has no codes here — the browser checker doesn&rsquo;t score it. And an axis
-        shown as <code className="rounded-sm bg-bg-muted px-1 py-0.5">n/a</code> means the input had
-        nothing to measure for it (or it needs the full skill); it never counts for or against the
-        score.
+        The A4 (<code className="rounded-sm bg-bg-muted px-1 py-0.5">PZ-P*</code>) codes are scored
+        by the skill; the browser tool doesn&rsquo;t check A4. An axis shown as{" "}
+        <code className="rounded-sm bg-bg-muted px-1 py-0.5">n/a</code> means the input had nothing
+        to measure for it; it never counts for or against the score.
       </p>
     </article>
   );

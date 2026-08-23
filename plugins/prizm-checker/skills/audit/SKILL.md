@@ -14,20 +14,23 @@ never let it read as a judgement of the team.
 
 ## Version
 
-Checker v0.3.2 — web + source-access tier, axes A1–A3, baseline + incremental modes,
-upstream findings routed to an internal file, low-confidence guardrail.
-Not yet implemented: A4 (composition), A5 (accessibility/contrast), the rendered
-(no-source) tier, and Figma. Say so plainly rather than implying full coverage.
+Checker v0.4.0 — web + JavaFX, source-access tier, axes A1–A5, baseline + incremental
+modes, upstream findings routed to an internal file, low-confidence guardrail.
+Source passes only: A4 covers the source-detectable composition rules and A5 the
+source-detectable accessibility signals. Not yet implemented: colour CONTRAST
+(needs a rendered pass), holistic composition judgement beyond the authored rules,
+the rendered (no-source) tier, and Figma. Say so plainly rather than implying full
+coverage.
 
 ## The five axes
 
-| Axis | Question | Status in v0.1 |
+| Axis | Question | Status in v0.4.0 |
 |---|---|---|
 | **A1** Token compliance | Are colours, radii, shadows, fonts coming from PRIZM tokens? | Implemented |
 | **A2** Component adoption | Is PRIZM's component used where one exists? | Implemented |
 | **A3** Component fidelity | Is the copied component still the PRIZM component? | Implemented |
-| **A4** Composition & pattern | Is the arrangement on-system? | Not implemented |
-| **A5** Accessibility & contrast | Does the rendered result meet the a11y policy? | Not implemented |
+| **A4** Composition & pattern | Is the arrangement on-system? | Source pass — liquid-glass/zone/pack rules (PZ-P01/P06/P10); holistic judgement still needs a reviewer |
+| **A5** Accessibility & contrast | Does the result meet the a11y floor? | Source pass — alt text, icon-only names, zoom (PZ-A01/A02/A10/A11); contrast needs a rendered pass |
 
 ## Workflow
 

@@ -9,15 +9,16 @@ diagnostic tool, not a build gate.
 """
 import argparse, datetime, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import ground_truth, scan_tokens, scan_components, scan_drift, score, report
+import ground_truth, scan_tokens, scan_components, scan_drift, scan_composition, scan_a11y, score, report
 from common import dump, owned_files, changed_files
 
-CHECKER_VERSION = "0.3.2"
-MEASURED = ("A1", "A2", "A3")
+CHECKER_VERSION = "0.4.0"
+MEASURED = ("A1", "A2", "A3", "A4", "A5")
 NOT_ASSESSED_NOTE = (
-    "A4 (composition) and A5 (accessibility/contrast) require a rendered pass, which this "
-    "run did not perform. Spacing and typography are outside the scope of this version of "
-    "the Checker.")
+    "A4 (composition) covers the source-detectable rules — liquid-glass/zone/extension-pack "
+    "correctness; holistic composition still benefits from a reviewer. A5 (accessibility) covers "
+    "source signals — image text alternatives, icon-only control names, and zoom; colour CONTRAST "
+    "needs a rendered pass and is not measured here. Spacing and typography remain out of scope.")
 
 
 def sev_order_key(sev):
@@ -48,8 +49,8 @@ def coverage_line(gt):
             f'{len(stable)} · variant contracts for {len(with_variants)} · '
             f'{len(gt["packs"])} extension pack(s), generic handler covers all · '
             f'{len(gt["javafx"]["controls"])} JavaFX classes known · '
-            f'spacing: not checked · typography: not checked · '
-            f'composition rules: 0 authored (A4 pending)')
+            f'spacing: not checked · typography: not checked · contrast: needs rendered pass · '
+            f'composition rules: 3 authored (A4 source pass) · accessibility: source pass (A5)')
 
 
 def main():
@@ -98,6 +99,8 @@ def main():
     r1 = scan_tokens.scan(a.target, gt, a.exclude, owned, only)
     r2 = scan_components.scan(a.target, gt, a.exclude, owned, only)
     r3 = scan_drift.scan(a.target, gt, r2["vendored"], a.exclude, only)
+    r4 = scan_composition.scan(a.target, gt, a.exclude, owned, only)
+    r5 = scan_a11y.scan(a.target, gt, a.exclude, owned, only)
 
     # Scan the PRIZM-owned copies too, but file the results separately. These are
     # deviations in the design system's own code: the product team cannot fix them
@@ -116,8 +119,8 @@ def main():
             upstream.append(f)
         upstream.sort(key=lambda f: (sev_order_key(f["severity"]), f["rule"], f["file"], f["line"]))
 
-    results = {"A1": r1, "A2": r2, "A3": r3}
-    findings = r1["findings"] + r2["findings"] + r3["findings"]
+    results = {"A1": r1, "A2": r2, "A3": r3, "A4": r4, "A5": r5}
+    findings = r1["findings"] + r2["findings"] + r3["findings"] + r4["findings"] + r5["findings"]
     findings.sort(key=lambda f: (sev_order_key(f["severity"]), f["rule"], f["file"], f["line"]))
 
     s = score.combine(results, MEASURED)
