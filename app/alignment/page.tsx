@@ -53,7 +53,7 @@ const AXES: Axis[] = [
     weight: "10%",
     question: "Does it meet the accessibility floor?",
     example:
-      "An <img> or JavaFX ImageView with no text alternative; an icon-only control with no label; blocked zoom.",
+      "An <img> or JavaFX ImageView with no text alternative; an icon-only control with no label; blocked zoom; a colour pair below AA contrast.",
   },
 ];
 
@@ -156,6 +156,11 @@ const CODES: CodeRow[] = [
   },
   { code: "PZ-A01", axis: "A5 · Accessibility", flags: "Image with no alt text" },
   { code: "PZ-A02", axis: "A5 · Accessibility", flags: "Viewport blocks zoom" },
+  {
+    code: "PZ-A03",
+    axis: "A5 · Accessibility",
+    flags: "A colour pair below WCAG AA contrast (4.5:1), using PRIZM's own contrast policy",
+  },
   { code: "PZ-A10", axis: "A5 · Accessibility", flags: "JavaFX ImageView with no accessible text" },
   {
     code: "PZ-A11",
@@ -217,7 +222,8 @@ export default function AlignmentPage() {
         <a href="#get-the-skill" className="font-medium text-accent hover:underline">
           install the PRIZM Checker skill
         </a>{" "}
-        below. (Colour contrast still needs a rendered pass either way.)
+        below. (Contrast is checked on colour pairs visible in source, held to PRIZM&rsquo;s AA
+        policy; contrast on layout-inherited backgrounds still needs a rendered pass.)
       </div>
       <div className="mt-6">
         <AlignmentChecker />
@@ -232,9 +238,10 @@ export default function AlignmentPage() {
         <p className="mt-1 text-sm text-fg-muted">
           The authoritative, whole-repo audit, run by Claude: tokens, adoption, fidelity,
           composition, and accessibility (A1–A5) scored deterministically and pinned to a PRIZM
-          version, with per-file findings and a ranked fix list. (Colour contrast still needs a
-          rendered pass; deeper composition judgement still benefits from a reviewer.) Install once;
-          it stays up to date.
+          version, with per-file findings and a ranked fix list. Contrast is held to PRIZM&rsquo;s
+          own AA policy on any colour pair resolvable from source. (Contrast on layout-inherited
+          backgrounds still needs a rendered pass; deeper composition still benefits from a
+          reviewer.) Install once; it stays up to date.
         </p>
 
         <p className="mt-4 text-sm font-medium text-fg">Claude Code desktop app (no terminal)</p>
@@ -290,7 +297,7 @@ export default function AlignmentPage() {
             className="inline-flex h-9 shrink-0 items-center gap-2 rounded-md border border-border-strong bg-bg px-4 text-sm font-medium text-fg transition-colors hover:bg-bg-muted"
           >
             <Download className="h-4 w-4" />
-            Download skill (v0.4.0)
+            Download skill (v0.5.0)
           </a>
           <span className="text-sm text-fg-muted">
             Unzip into <code className="rounded-sm bg-bg-muted px-1 py-0.5">.claude/skills/</code>{" "}
@@ -351,7 +358,8 @@ export default function AlignmentPage() {
         How much can be assessed depends on how much access the checker has. The browser tool above
         has your source but is a quick, partial read. The authoritative Tier 1 audit comes from
         running the skill against the repo — deterministic and pinned to a PRIZM version. It covers
-        all five axes (A1–A5) from source; only colour contrast still needs a rendered pass, and
+        all five axes (A1–A5) from source — contrast included, held to PRIZM&rsquo;s AA policy on
+        resolvable colour pairs; only layout-inherited contrast still needs a rendered pass, and
         holistic composition still benefits from a reviewer. A rendered-only (Tier 2) or
         screenshot-only (Tier 3) audit sees even less, and should never be read as a Tier 1 one.
       </p>

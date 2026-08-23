@@ -1,7 +1,7 @@
 {
   "name": "prizm-checker",
-  "description": "Audit a repo for alignment with the PRIZM design system and produce a diagnostic report with a % alignment score across five axes: tokens (A1), component adoption (A2), fidelity (A3), composition (A4), and accessibility (A5). Source passes; colour contrast needs a rendered pass. Covers React/Next web products and JavaFX thick clients.",
-  "version": "0.4.0",
+  "description": "Audit a repo for alignment with the PRIZM design system and produce a diagnostic report with a % alignment score across five axes: tokens (A1), component adoption (A2), fidelity (A3), composition (A4), and accessibility (A5). Source passes, including WCAG AA contrast on colour pairs resolvable from source (PRIZM's own policy); contrast on layout-inherited backgrounds needs a rendered pass. Covers React/Next web products and JavaFX thick clients.",
+  "version": "0.5.0",
   "author": { "name": "DSTA — PRIZM" },
   "homepage": "https://github.com/prizm-design/prizm",
   "keywords": ["prizm", "design-system", "audit", "alignment", "tokens", "accessibility"]

@@ -291,6 +291,112 @@ function trimSnippet(line: string, max = 90): string {
   return t.length > max ? `${t.slice(0, max)}…` : t;
 }
 
+// ── WCAG contrast — the SAME path as PRIZM's scripts/audit-contrast.ts ─────────
+// (Oklab → linear sRGB → relative luminance → ratio) and the SAME policy (AA
+// 4.5:1 text). Only source-resolvable colour pairs are scored; token pairings
+// are AA by PRIZM's own CI and their value depends on the active theme.
+const AA_TEXT_RATIO = 4.5;
+type RGB = [number, number, number];
+
+function hexToSrgb(h: string): RGB | null {
+  let s = h.replace("#", "");
+  if (s.length === 3 || s.length === 4) s = s.slice(0, 3).replace(/./g, (c) => c + c);
+  else if (s.length === 8) s = s.slice(0, 6);
+  if (s.length !== 6 || /[^0-9a-fA-F]/.test(s)) return null;
+  return [0, 2, 4].map((i) => Number.parseInt(s.slice(i, i + 2), 16) / 255) as RGB;
+}
+function rgbToSrgb(v: string): RGB | null {
+  const m = v.match(/rgba?\(([^)]+)\)/i);
+  if (!m) return null;
+  const parts = m[1]
+    .split(/[,\s/]+/)
+    .filter(Boolean)
+    .slice(0, 3);
+  if (parts.length < 3) return null;
+  const out = parts.map((p) =>
+    p.endsWith("%") ? Number.parseFloat(p) / 100 : Number.parseFloat(p) / 255,
+  );
+  return out.some(Number.isNaN) ? null : (out as RGB);
+}
+function oklchToSrgb(v: string): RGB | null {
+  const m = v.match(/oklch\(\s*([\d.]+)(%?)\s+([\d.]+)\s+([\d.]+)/i);
+  if (!m) return null;
+  let L = Number.parseFloat(m[1]);
+  if (m[2] === "%" || L > 1) L /= 100;
+  const c = Number.parseFloat(m[3]);
+  const h = (Number.parseFloat(m[4]) * Math.PI) / 180;
+  const a = c * Math.cos(h);
+  const b = c * Math.sin(h);
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s_ = L - 0.0894841775 * a - 1.291485548 * b;
+  const [lc, mc, sc] = [l_ ** 3, m_ ** 3, s_ ** 3];
+  const r = 4.0767416621 * lc - 3.3077115913 * mc + 0.2309699292 * sc;
+  const g = -1.2684380046 * lc + 2.6097574011 * mc - 0.3413193965 * sc;
+  const bl = -0.0041960863 * lc - 0.7034186147 * mc + 1.707614701 * sc;
+  const toS = (x: number) => {
+    const y = x <= 0.0031308 ? 12.92 * x : 1.055 * x ** (1 / 2.4) - 0.055;
+    return Math.max(0, Math.min(1, y));
+  };
+  return [toS(r), toS(g), toS(bl)];
+}
+function cssColorToSrgb(value: string): RGB | null {
+  const v = value.trim().toLowerCase();
+  if (v === "white") return [1, 1, 1];
+  if (v === "black") return [0, 0, 0];
+  if (v.startsWith("#")) return hexToSrgb(v);
+  if (v.startsWith("rgb")) return rgbToSrgb(v);
+  if (v.startsWith("oklch")) return oklchToSrgb(v);
+  return null;
+}
+function relLuminance([r, g, b]: RGB): number {
+  const lin = (x: number) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+}
+function contrastRatio(fg: RGB, bg: RGB): number {
+  const [a, b] = [relLuminance(fg), relLuminance(bg)];
+  return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+}
+
+const COLOR_LITERAL_RE = /#(?:[0-9a-fA-F]{3,8})|rgba?\([^)]*\)|oklch\([^)]*\)/i;
+const firstColor = (val: string) => val.match(COLOR_LITERAL_RE)?.[0] ?? val.trim();
+const deArb = (v: string) => v.replace(/_/g, " ");
+
+/** Colour pairs set together in source: a CSS rule, an inline style, or one
+ *  element's arbitrary Tailwind classes. */
+function contrastPairs(
+  text: string,
+  isCss: boolean,
+): Array<{ fg: string; bg: string; index: number }> {
+  const pairs: Array<{ fg: string; bg: string; index: number }> = [];
+  if (isCss) {
+    for (const m of text.matchAll(/\{([^{}]*)\}/g)) {
+      const body = m[1];
+      const c = body.match(/(?<![\w-])color\s*:\s*([^;}]+)/i);
+      const b = body.match(/(?<![\w-])background(?:-color)?\s*:\s*([^;}]+)/i);
+      if (c && b) pairs.push({ fg: firstColor(c[1]), bg: firstColor(b[1]), index: m.index ?? 0 });
+    }
+    return pairs;
+  }
+  for (const m of text.matchAll(/style\s*=\s*\{\{([^{}]*)\}\}/g)) {
+    const c = m[1].match(/(?<![\w-])color\s*:\s*['"]([^'"]+)['"]/i);
+    const b = m[1].match(/(?<![\w-])background(?:Color)?\s*:\s*['"]([^'"]+)['"]/i);
+    if (c && b) pairs.push({ fg: c[1], bg: firstColor(b[1]), index: m.index ?? 0 });
+  }
+  for (const m of text.matchAll(/style\s*=\s*"([^"]*)"/g)) {
+    const c = m[1].match(/(?<![\w-])color\s*:\s*([^;}]+)/i);
+    const b = m[1].match(/(?<![\w-])background(?:-color)?\s*:\s*([^;}]+)/i);
+    if (c && b) pairs.push({ fg: firstColor(c[1]), bg: firstColor(b[1]), index: m.index ?? 0 });
+  }
+  for (const m of text.matchAll(/class(?:Name)?\s*=\s*["'`{]([^"'`}]+)/g)) {
+    const t = m[1].match(/(?<![\w-])text-\[([^\]]+)\]/);
+    const b = m[1].match(/(?<![\w-])bg-\[([^\]]+)\]/);
+    if (t && b) pairs.push({ fg: deArb(t[1]), bg: deArb(b[1]), index: m.index ?? 0 });
+  }
+  return pairs;
+}
+const lineOfIndex = (text: string, idx: number) => text.slice(0, idx).split("\n").length;
+
 // ── The scan ──────────────────────────────────────────────────────────────────
 
 interface RawScan {
@@ -593,6 +699,30 @@ function scanRaw(source: string, file?: string): RawScan {
       }
     }
   });
+
+  // ── A5: contrast (PZ-A03) — colour pairs resolvable from source, held to
+  // PRIZM's AA policy via the same maths as scripts/audit-contrast.ts. ──
+  const isCss = file ? /\.s?css$/i.test(file) : language === "css";
+  for (const p of contrastPairs(src, isCss)) {
+    const fg = cssColorToSrgb(p.fg);
+    const bg = cssColorToSrgb(p.bg);
+    if (!fg || !bg) continue; // a token/var/named colour we can't resolve without rendering
+    a5Opps++;
+    const r = contrastRatio(fg, bg);
+    if (r < AA_TEXT_RATIO) {
+      push({
+        id: "PZ-A03",
+        axis: "A5",
+        severity: "error",
+        deterministic: true,
+        line: lineOfIndex(src, p.index),
+        snippet: `${p.fg} on ${p.bg}`,
+        message: `Text contrast ${r.toFixed(2)}:1 is below WCAG AA (4.5:1).`,
+        suggestion:
+          "Meet PRIZM's contrast policy (WCAG AA, 4.5:1 for text). Prefer PRIZM fg/bg token pairings — they are AA by design.",
+      });
+    }
+  }
 
   return {
     findings,

@@ -12,13 +12,15 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import ground_truth, scan_tokens, scan_components, scan_drift, scan_composition, scan_a11y, score, report
 from common import dump, owned_files, changed_files
 
-CHECKER_VERSION = "0.4.0"
+CHECKER_VERSION = "0.5.0"
 MEASURED = ("A1", "A2", "A3", "A4", "A5")
 NOT_ASSESSED_NOTE = (
     "A4 (composition) covers the source-detectable rules — liquid-glass/zone/extension-pack "
     "correctness; holistic composition still benefits from a reviewer. A5 (accessibility) covers "
-    "source signals — image text alternatives, icon-only control names, and zoom; colour CONTRAST "
-    "needs a rendered pass and is not measured here. Spacing and typography remain out of scope.")
+    "source signals — image text alternatives, icon-only control names, zoom, and colour contrast "
+    "on any pair that resolves from source (held to PRIZM's AA policy, 4.5:1 text). Contrast on "
+    "layout-inherited backgrounds still needs a rendered pass. Spacing and typography remain out "
+    "of scope.")
 
 
 def sev_order_key(sev):
@@ -49,7 +51,8 @@ def coverage_line(gt):
             f'{len(stable)} · variant contracts for {len(with_variants)} · '
             f'{len(gt["packs"])} extension pack(s), generic handler covers all · '
             f'{len(gt["javafx"]["controls"])} JavaFX classes known · '
-            f'spacing: not checked · typography: not checked · contrast: needs rendered pass · '
+            f'spacing: not checked · typography: not checked · '
+            f'contrast: source pairs checked at AA (layout-inherited needs rendered) · '
             f'composition rules: 3 authored (A4 source pass) · accessibility: source pass (A5)')
 
 
