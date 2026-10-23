@@ -55,3 +55,7 @@ AI_HANDOFF.md
 
 # Generated skill download (built from plugins/prizm-checker by scripts/package-skill.ts)
 public/prizm-checker.zip
+
+# source screens for proposed components stay local (public fork)
+contributions/source-screens/*
+!contributions/source-screens/README.md
