@@ -9,8 +9,12 @@ repo root; PRIZM's own rules are in `/PRIZM.md`.
 | Path | What goes there |
 |---|---|
 | `contributions/source-screens/` | Exported source screens, one folder per screen — **git-ignored, local only** |
-| `contributions/component-template.md` | Template for each component's guideline doc |
-| `llms/<slug>.md` | The finished guideline doc for each component |
+| `contributions/component-template.md` | Template for a component's doc |
+| `contributions/pattern-template.md` | Template for a pattern (includes the pattern-vs-component-vs-guideline test) |
+| `contributions/guideline-template.md` | Template for a guideline |
+| `llms/<slug>.md` | The finished doc for each component |
+| `llms/patterns/<slug>.md` | The finished doc for each pattern |
+| `llms/guidelines/<slug>.md` | The finished doc for each guideline |
 | `components/ui/<slug>.tsx` | The component code |
 
 ## Per-component checklist
