@@ -9,7 +9,7 @@ rules for contribution work.
 
 - `origin` = `yanqikwok/prizm` (this fork, public — anything pushed is visible to everyone).
 - `upstream` = `prizm-design/prizm` (the original). Never push to `upstream`.
-- New component work happens on the `new-components` branch, not `main`. Keep `main` identical to
+- AI design system work (components, patterns and guidelines) happens on the `ai-design` branch, not `main`. Keep `main` identical to
   `upstream/main` so it can be synced cleanly (`gh repo sync` or `git pull upstream main`).
 - The repo is worked on from two MacBooks. Start every session with `git pull`; end with a commit and
   `git push` so the other machine can continue.
