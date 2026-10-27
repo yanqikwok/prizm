@@ -5,37 +5,37 @@ type: component
 layer: ai-design-system
 status: alpha
 source: components/ui/prompt-input.tsx
-built-on: Base UI Toolbar
+built-on: Base UI Field
 proposed-by: yanqikwok
 source-screen: contributions/source-screens/prompt-input/screen.png
 ---
 
 # Prompt Input
 
-The composer a user types into to send a prompt to an AI assistant: an auto-growing text area, optional file attachments, and a send button that becomes Stop while a response is generating. A composite form control in PRIZM, and the entry point of every conversation in the AI design system. Built on Base UI `Toolbar` for the action row; the text area is a native `<textarea>` because Base UI has no multi-line primitive.
+The composer a user types into to send a prompt to an AI assistant: an auto-growing text area, optional file attachments, and a send button that becomes Stop while a response is generating. A composite form control in PRIZM, and the entry point of every conversation in the AI design system. Built on Base UI `Field`, like PRIZM's `Field`: the composer is the field root (rendered as a `<form>`) and the text area is its control (`Field.Control` rendered as a `<textarea>`), so it shares the focused, filled and disabled behaviour of PRIZM's other text fields.
 
 ## UI visuals
 
 - Preview: none yet. Alpha components have no docs-site page; a live preview will be added with the docs-site work.
-- A rounded surface with the text area on top and a toolbar underneath: attach on the left, send on the right. Attachments, when present, sit as chips above the text area.
+- A rounded surface with the text area on top and a row of actions underneath: attach on the left, send on the right. Attachments, when present, sit as chips above the text area.
 
 ```tsx
 <PromptInput onSubmit={send}>
   <PromptInputTextarea placeholder="Ask anything" aria-label="Prompt" />
-  <PromptInputToolbar>
+  <PromptInputActions>
     <PromptInputAttachButton onFilesSelected={attach} />
     <PromptInputSubmit />
-  </PromptInputToolbar>
+  </PromptInputActions>
 </PromptInput>
 ```
 
 ## Sub-components
 
-- `PromptInput` — root `<form>`; holds the value, submit gating, status and disabled state
-- `PromptInputTextarea` — the auto-growing text area (Enter sends, Shift+Enter adds a line)
+- `PromptInput` — root: a Base UI `Field.Root` rendered as a `<form>`; holds the value, submit gating, status and disabled state
+- `PromptInputTextarea` — the field control: Base UI `Field.Control` rendered as an auto-growing `<textarea>` (Enter sends, Shift+Enter adds a line)
 - `PromptInputAttachments` — row of attachment chips above the text area; hidden when empty
 - `PromptInputAttachment` — one file chip: icon, name, meta line, reading state, remove button
-- `PromptInputToolbar` — the action row (Base UI `Toolbar`)
+- `PromptInputActions` — the row of buttons under the text area; plain layout, normal tab order
 - `PromptInputAttachButton` — opens the file picker; multiple files by default
 - `PromptInputCount` — character count, shown only as the value nears `maxLength`
 - `PromptInputSubmit` — Send; becomes Stop while `status="generating"`
@@ -62,7 +62,7 @@ The composer a user types into to send a prompt to an AI assistant: an auto-grow
 
 - **Default (empty)** — placeholder in `text-fg-subtle`; attach enabled; send disabled at 50% opacity.
 - **Hover** — attach, send, stop and remove buttons take the ghost / subtle `Button` hover fill.
-- **Focus** — focus anywhere inside the composer shows `border-accent` plus a 3px `ring-accent/20` around the whole box, not just the text area.
+- **Focus** — while the text area has focus (Base UI Field's `data-focused`), the whole box shows `border-accent` plus a 3px `ring-accent/20`. Buttons in the row show their own `Button` focus outline instead.
 - **Has text** — send enables in `text-accent`. Enter sends; Shift+Enter adds a new line.
 - **Growing** — the text area grows with its content up to 200px, then scrolls. It clears and returns to one line after sending.
 - **Attachment reading** — a chip with a `Spinner` and a "Reading file…" line. Send is blocked until every attachment finishes reading, even when there is text.
@@ -76,7 +76,7 @@ There is no attachment error state: the product's file picker must restrict file
 ## Visual treatment
 
 - Surface: `bg-surface`, `border-border-strong`, `rounded-xl`, `shadow-md`, padding 16px sides, 12px top, 8px bottom.
-- Focus: `border-accent` and `ring-3 ring-accent/20` on `:focus-within`.
+- Focus: `border-accent` and `ring-3 ring-accent/20` on `data-focused` (set by Base UI Field while the text area has focus).
 - Text: `text-base` (16px) `text-fg`; placeholder `text-fg-subtle`.
 - Attachment chip: `bg-bg-subtle`, `border-border`, `rounded-lg`; name `text-sm font-semibold text-fg`, meta `text-xs text-fg-subtle`.
 - Send: ghost icon `Button` in `text-accent`. Stop: subtle icon `Button`. Attach: ghost icon `Button` in `text-fg-muted`.
@@ -85,8 +85,8 @@ There is no attachment error state: the product's file picker must restrict file
 
 ## Accessibility
 
-- The root is a `<form>`; give the text area an accessible name with `aria-label` (or a visible `Label`). The placeholder is not a label.
-- The action row is a Base UI `Toolbar` (`aria-label="Prompt actions"`): Tab moves from the text area into the toolbar, Left / Right arrows move between its buttons.
+- Base UI `Field` wraps the composer: the root renders as a `<form>`, and the text area is the field's control. Give it an accessible name with `aria-label`, or put PRIZM's `FieldLabel` inside the composer and Base UI links it automatically. The placeholder is not a label.
+- Normal tab order, as in any form: attachment remove buttons, then the text area, then attach, then Send / Stop. Disabled buttons are skipped.
 - Every icon button has an `aria-label`: "Attach files", "Send", "Stop generating", "Remove [file name]". All are overridable for localisation.
 - Enter sends, Shift+Enter inserts a new line; Enter is ignored while an IME is composing, so CJK input works.
 - Attachments sit in a `role="group"` labelled "Attachments". A reading chip is `aria-busy` and its `Spinner` is a `role="status"` live region.
@@ -123,11 +123,11 @@ const [files, setFiles] = useState<Attached[]>([]);
     placeholder={files.length ? "Ask about these files" : "Ask anything"}
     aria-label="Prompt"
   />
-  <PromptInputToolbar>
+  <PromptInputActions>
     <PromptInputAttachButton accept=".pdf,application/pdf" onFilesSelected={add} />
     <PromptInputCount />
     <PromptInputSubmit />
-  </PromptInputToolbar>
+  </PromptInputActions>
 </PromptInput>
 ```
 
@@ -135,10 +135,10 @@ const [files, setFiles] = useState<Attached[]>([]);
 // Hero on an empty screen
 <PromptInput variant="hero" onSubmit={start}>
   <PromptInputTextarea placeholder="Ask anything" aria-label="Prompt" autoFocus />
-  <PromptInputToolbar>
+  <PromptInputActions>
     <PromptInputAttachButton onFilesSelected={add} />
     <PromptInputSubmit />
-  </PromptInputToolbar>
+  </PromptInputActions>
 </PromptInput>
 ```
 
@@ -171,7 +171,7 @@ const [files, setFiles] = useState<Attached[]>([]);
 
 `PromptInputAttachButton`: `onFilesSelected(files: File[])`, `accept`, `multiple` (default `true`), `label` (default `"Attach files"`).
 `PromptInputSubmit`: `sendLabel` (default `"Send"`), `stopLabel` (default `"Stop generating"`).
-`PromptInputTextarea` spreads all `<textarea>` props except `value`, `defaultValue` and `maxLength`, which come from the root.
+`PromptInputTextarea` spreads all `<textarea>` props except `value`, `defaultValue`, `maxLength` and `disabled`, which come from the root and the Field.
 
 _Hand-written while this component is alpha. Moves to `lib/components-api.ts` when promoted to stable._
 
@@ -188,21 +188,21 @@ The canonical source lives at `components/ui/prompt-input.tsx`. Copy it into the
 | PRIZM component | Why it doesn't fit |
 |---|---|
 | `Textarea` | Closest match, but it is a standalone bordered field (`min-h-[80px]`, own border, radius and focus outline, user-resizable). A composer needs a borderless, auto-growing text area inside a larger surface that owns the border and focus ring. Getting there means overriding `Textarea`'s internals, which PRIZM's reuse rule forbids. |
-| `Field` | Labels a single form control with hint and error. The composer has no visible label or inline error, and its submit behaviour (Enter, gating, Stop) isn't something `Field` models. |
+| `Field` | Closest in behaviour, and the composer is built on the same Base UI primitive. PRIZM's `Field` is a layout wrapper (label, hint, error stacked with a gap) around a separately styled control; the composer needs one surface that holds the attachments, text and actions together, plus submit behaviour (Enter, gating, Stop) that `Field` doesn't model. |
 | `Input` | Single-line only; prompts are multi-line. |
 | `Command` / `Combobox` | Pick from a filtered list; the composer submits free text. |
-| `Group` | Layout only; used as the reference for the toolbar's row layout. |
+| `Group` | Layout only; used as the reference for the action row's layout. |
 
 Reused inside the component: `Button` (attach, send, stop, remove), `Spinner` (reading state).
 
-Base UI primitive used: `Toolbar` for the action row (roving focus, disabled propagation). Base UI has no textarea primitive, so the text area is native. `Field` was considered for the text area but `Field.Control` renders an `<input>`.
+Base UI primitive used: `Field`. `Field.Root` renders as the `<form>` and `Field.Control` renders as the `<textarea>` through Base UI's `render` prop (Base UI has no dedicated textarea part). This gives the composer the same label linking, disabled propagation and `data-focused` / `data-filled` / `data-disabled` state as PRIZM's other text fields. `Toolbar` was considered for the action row and rejected: its single tab stop with arrow-key movement suits long toolbars, not two or three buttons, where users expect Tab to reach each one.
 
 ## Anatomy
 
 1. **Container**: the surface; owns the border, radius, shadow and focus ring.
 2. **Attachments row** (optional): file chips above the text area.
 3. **Text area**: where the prompt is written; grows to 200px.
-4. **Toolbar**: attach on the left; count and send / stop on the right.
+4. **Actions row**: attach on the left; count and send / stop on the right.
 
 ## Content guidelines
 
