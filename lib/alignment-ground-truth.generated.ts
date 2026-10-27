@@ -57,6 +57,7 @@ export const PRIZM_COMPONENTS: PrizmComponentEntry[] = [
   { name: "Pagination", slug: "pagination", status: "stable", javafx: true },
   { name: "Popover", slug: "popover", status: "stable", javafx: true },
   { name: "Progress", slug: "progress", status: "stable", javafx: true },
+  { name: "Prompt Input", slug: "prompt-input", status: "alpha", javafx: false },
   { name: "Prose", slug: "prose", status: "stable", javafx: true },
   { name: "Radio Group", slug: "radio-group", status: "stable", javafx: true },
   { name: "Scroll Area", slug: "scroll-area", status: "planned", javafx: false },
@@ -102,6 +103,6 @@ export const JAVAFX_CONTROL_MAP: Record<string, string> = {
 /** Quick counts, handy for the checker's "kept in sync" note. */
 export const GROUND_TRUTH_SUMMARY = {
   colorTokens: 18,
-  components: 50,
+  components: 51,
   javafxControls: 17,
 };

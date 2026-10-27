@@ -31,4 +31,4 @@ repo root; PRIZM's own rules are in `/PRIZM.md`.
 
 | Component | Source screen | Status | Issue |
 |---|---|---|---|
-| _(add one row per component)_ | | Not started | |
+| Prompt Input (`prompt-input`) | `prompt-input/` | Alpha: doc, code, registry; verify passes | |
