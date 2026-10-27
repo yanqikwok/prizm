@@ -45,7 +45,9 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   const example = EXAMPLES[slug];
   const api = getComponentApi(slug);
   const isStable = component.status === "stable";
-  const source = isStable ? readComponentSource(slug) : null;
+  // Alpha components ship source and a preview too; only planned ones have neither.
+  const isShipped = component.status !== "planned";
+  const source = isShipped ? readComponentSource(slug) : null;
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
@@ -70,7 +72,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
         </div>
       </div>
 
-      {isStable && example ? (
+      {isShipped && example ? (
         <div className="mt-8 space-y-6">
           <section>
             <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-fg-subtle">
@@ -85,6 +87,21 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
             </h2>
             <CodeBlock code={example.code} language="tsx" />
           </section>
+
+          {!isStable && !api && (
+            <section>
+              <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-fg-subtle">
+                Props
+              </h2>
+              <p className="text-sm text-fg-muted">
+                Alpha components document their props by hand in{" "}
+                <code className="rounded bg-bg-muted px-1.5 py-0.5 font-mono text-xs">
+                  llms/{component.slug}.md
+                </code>{" "}
+                until they are promoted to stable.
+              </p>
+            </section>
+          )}
 
           {api && (
             <section>
