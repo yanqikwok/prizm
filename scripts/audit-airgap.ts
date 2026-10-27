@@ -34,6 +34,9 @@ const IGNORE_DIRS = new Set([
   // The bundled PRIZM Checker skill/plugin — shipped as a plugin, not part of
   // the air-gapped docs-site payload, and its docs/fixtures mention hosts.
   "plugins",
+  // Fork-only: exported source screens for proposed components. Git-ignored and
+  // never committed, so they can't reach the air-gapped payload.
+  "contributions/source-screens",
 ]);
 
 // Specific files we skip. The audit script itself contains the forbidden-host
