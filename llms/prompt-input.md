@@ -16,7 +16,7 @@ The composer a user types into to send a prompt to an AI assistant: an auto-grow
 
 ## UI visuals
 
-- Preview: none yet. Alpha components have no docs-site page; a live preview will be added with the docs-site work.
+- Preview: `/components/prompt-input` on the docs site (run `pnpm dev`): a working playground plus every state, in all four themes via "Compare all variants".
 - A rounded surface with the text area on top and a row of actions underneath: attach on the left, send on the right. Attachments, when present, sit as chips above the text area.
 
 ```tsx

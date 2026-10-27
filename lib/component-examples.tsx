@@ -1,6 +1,7 @@
 import { ComboboxDemo } from "@/components/site/combobox-demo";
 import { CommandDemo } from "@/components/site/command-demo";
 import { PaginationDemo } from "@/components/site/pagination-demo";
+import { PromptInputDemo } from "@/components/site/prompt-input-demo";
 import { ToastDemo } from "@/components/site/toast-demo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -1543,6 +1544,47 @@ export function Example() {
 }`,
 };
 
+const promptInputExample: ComponentExample = {
+  preview: <PromptInputDemo />,
+  code: `import {
+  PromptInput, PromptInputActions, PromptInputAttachButton,
+  PromptInputAttachment, PromptInputAttachments, PromptInputCount,
+  PromptInputSubmit, PromptInputTextarea,
+} from "@/components/ui/prompt-input";
+
+export function Composer({ files, onAttach, onRemove, onSend, generating, onStop }) {
+  return (
+    <PromptInput
+      onSubmit={onSend}
+      status={generating ? "generating" : "idle"}
+      onStop={onStop}
+      maxLength={4000}
+    >
+      <PromptInputAttachments>
+        {files.map((f) => (
+          <PromptInputAttachment
+            key={f.id}
+            name={f.name}
+            meta={f.size}
+            status={f.ready ? "ready" : "reading"}
+            onRemove={() => onRemove(f.id)}
+          />
+        ))}
+      </PromptInputAttachments>
+      <PromptInputTextarea
+        aria-label="Prompt"
+        placeholder={files.length ? "Ask about these files" : "Ask anything"}
+      />
+      <PromptInputActions>
+        <PromptInputAttachButton accept=".pdf,application/pdf" onFilesSelected={onAttach} />
+        <PromptInputCount />
+        <PromptInputSubmit />
+      </PromptInputActions>
+    </PromptInput>
+  );
+}`,
+};
+
 export const EXAMPLES: Record<string, ComponentExample> = {
   button: buttonExample,
   input: inputExample,
@@ -1552,6 +1594,7 @@ export const EXAMPLES: Record<string, ComponentExample> = {
   label: labelExample,
   field: fieldExample,
   textarea: textareaExample,
+  "prompt-input": promptInputExample,
   checkbox: checkboxExample,
   switch: switchExample,
   select: selectExample,
