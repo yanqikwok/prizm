@@ -3,11 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
-import { Toolbar as BaseToolbar } from "@base-ui-components/react/toolbar";
+import { Field as BaseField } from "@base-ui-components/react/field";
 import { type VariantProps, cva } from "class-variance-authority";
 import { FileText, Paperclip, Send, Square, X } from "lucide-react";
 import {
-  type ChangeEvent,
   type FormEvent,
   type FormHTMLAttributes,
   type HTMLAttributes,
@@ -60,7 +59,8 @@ const promptInputVariants = cva(
   [
     "mx-auto w-full rounded-xl border border-border-strong bg-surface px-4 pt-3 pb-2 shadow-md",
     "transition-[border-color,box-shadow]",
-    "focus-within:border-accent focus-within:ring-3 focus-within:ring-accent/20",
+    // Field state attributes from Base UI: data-focused while the textarea has focus.
+    "data-[focused]:border-accent data-[focused]:ring-3 data-[focused]:ring-accent/20",
     "data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
   ],
   {
@@ -140,18 +140,23 @@ export const PromptInput = forwardRef<HTMLFormElement, PromptInputProps>(
       <PromptInputContext.Provider
         value={{ value, setValue, canSubmit, status, onStop, disabled, maxLength, registerPending }}
       >
-        <form
-          ref={ref}
-          onSubmit={handleSubmit}
-          aria-disabled={disabled || undefined}
-          aria-busy={status === "generating" || undefined}
-          data-disabled={disabled ? "" : undefined}
+        {/* Base UI Field owns the disabled / focused / filled state; it renders as the <form>. */}
+        <BaseField.Root
+          ref={ref as unknown as Ref<HTMLDivElement>}
+          disabled={disabled}
           data-status={status}
           className={cn(promptInputVariants({ variant }), className)}
-          {...props}
+          render={
+            <form
+              onSubmit={handleSubmit}
+              aria-disabled={disabled || undefined}
+              aria-busy={status === "generating" || undefined}
+              {...props}
+            />
+          }
         >
           {children}
-        </form>
+        </BaseField.Root>
       </PromptInputContext.Provider>
     );
   },
@@ -160,12 +165,12 @@ PromptInput.displayName = "PromptInput";
 
 export type PromptInputTextareaProps = Omit<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
-  "value" | "defaultValue" | "maxLength"
+  "value" | "defaultValue" | "maxLength" | "disabled"
 >;
 
 export const PromptInputTextarea = forwardRef<HTMLTextAreaElement, PromptInputTextareaProps>(
-  ({ className, onChange, onKeyDown, rows = 1, ...props }, ref) => {
-    const { value, setValue, canSubmit, disabled } = usePromptInput("PromptInputTextarea");
+  ({ className, onKeyDown, rows = 1, ...props }, ref) => {
+    const { value, setValue, canSubmit } = usePromptInput("PromptInputTextarea");
     const innerRef = useRef<HTMLTextAreaElement | null>(null);
 
     // Grow with the content up to MAX_TEXTAREA_HEIGHT; reset when the value is cleared.
@@ -187,26 +192,23 @@ export const PromptInputTextarea = forwardRef<HTMLTextAreaElement, PromptInputTe
       }
     };
 
+    // Field.Control is typed for <input>; render swaps the element for a <textarea>.
+    // Value, change handling and disabled come from the Field; textarea-only props go on the element.
     return (
-      <textarea
-        ref={(node) => {
-          innerRef.current = node;
-          assignRef(ref, node);
+      <BaseField.Control
+        ref={(node: HTMLInputElement | null) => {
+          const el = node as unknown as HTMLTextAreaElement | null;
+          innerRef.current = el;
+          assignRef(ref, el);
         }}
-        rows={rows}
         value={value}
-        disabled={disabled}
-        onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
-          onChange?.(event);
-          setValue(event.target.value);
-        }}
-        onKeyDown={handleKeyDown}
+        onValueChange={(next) => setValue(next)}
         className={cn(
           "block max-h-50 w-full resize-none overflow-y-auto bg-transparent px-0.5 py-1 text-base leading-normal text-fg outline-none",
           "placeholder:text-fg-subtle disabled:cursor-not-allowed",
           className,
         )}
-        {...props}
+        render={<textarea rows={rows} onKeyDown={handleKeyDown} {...props} />}
       />
     );
   },
@@ -305,21 +307,12 @@ export const PromptInputAttachment = forwardRef<HTMLDivElement, PromptInputAttac
 );
 PromptInputAttachment.displayName = "PromptInputAttachment";
 
-export const PromptInputToolbar = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => {
-    const { disabled } = usePromptInput("PromptInputToolbar");
-    return (
-      <BaseToolbar.Root
-        ref={ref}
-        disabled={disabled}
-        aria-label="Prompt actions"
-        className={cn("mt-1 flex items-center gap-1", className)}
-        {...props}
-      />
-    );
-  },
+export const PromptInputActions = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("mt-1 flex items-center gap-1", className)} {...props} />
+  ),
 );
-PromptInputToolbar.displayName = "PromptInputToolbar";
+PromptInputActions.displayName = "PromptInputActions";
 
 export interface PromptInputAttachButtonProps {
   onFilesSelected: (files: File[]) => void;
@@ -348,17 +341,18 @@ export const PromptInputAttachButton = forwardRef<HTMLButtonElement, PromptInput
             if (files.length) onFilesSelected(files);
           }}
         />
-        <BaseToolbar.Button
+        <Button
           ref={ref}
+          variant="ghost"
+          size="icon"
           disabled={disabled}
-          focusableWhenDisabled={false}
           aria-label={label}
           title={label}
           onClick={() => fileRef.current?.click()}
-          render={<Button variant="ghost" size="icon" className={cn("text-fg-muted", className)} />}
+          className={cn("text-fg-muted", className)}
         >
           <Paperclip className="h-4.5 w-4.5" />
-        </BaseToolbar.Button>
+        </Button>
       </>
     );
   },
@@ -406,41 +400,34 @@ export const PromptInputSubmit = forwardRef<HTMLButtonElement, PromptInputSubmit
     // While a response is generating, the send button becomes Stop.
     if (status === "generating") {
       return (
-        <BaseToolbar.Button
+        <Button
           ref={ref}
+          variant="subtle"
+          size="icon"
           disabled={disabled}
-          focusableWhenDisabled={false}
           aria-label={stopLabel}
           title={stopLabel}
           onClick={onStop}
-          render={
-            <Button variant="subtle" size="icon" className={cn(SUBMIT_POSITION, className)} />
-          }
+          className={cn(SUBMIT_POSITION, className)}
         >
           <Square className="h-3.5 w-3.5 fill-current" />
-        </BaseToolbar.Button>
+        </Button>
       );
     }
 
     return (
-      <BaseToolbar.Button
+      <Button
         ref={ref}
+        type="submit"
+        variant="ghost"
+        size="icon"
         disabled={!canSubmit}
-        focusableWhenDisabled={false}
         aria-label={sendLabel}
         title={sendLabel}
-        // Submit through the form so onSubmit runs the same path as Enter.
-        onClick={(event) => event.currentTarget.form?.requestSubmit()}
-        render={
-          <Button
-            variant="ghost"
-            size="icon"
-            className={cn(SUBMIT_POSITION, "text-accent", className)}
-          />
-        }
+        className={cn(SUBMIT_POSITION, "text-accent", className)}
       >
         <Send className="h-4.5 w-4.5" />
-      </BaseToolbar.Button>
+      </Button>
     );
   },
 );
