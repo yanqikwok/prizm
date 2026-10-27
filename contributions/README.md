@@ -20,12 +20,15 @@ repo root; PRIZM's own rules are in `/PRIZM.md`.
 ## Per-component checklist
 
 1. [ ] Source screen exported to `source-screens/`
-2. [ ] Reuse check written (which PRIZM components were considered, and why they don't fit)
-3. [ ] Guideline doc at `llms/<slug>.md`, from the template
-4. [ ] Code at `components/ui/<slug>.tsx`
-5. [ ] Registry entry in `lib/components-registry.ts` with `status: "alpha"`
-6. [ ] `pnpm verify` passes
-7. [ ] Committed and pushed; tracker row and GitHub issue updated
+2. [ ] Every state of the component extracted from the source screen, from the PNG and from the
+   HTML export, which can carry states the PNG doesn't show (e.g. a bundled prototype's code). List them, agree
+   which to keep, drop or add, and carry them into the doc's "States" section and the code
+3. [ ] Reuse check written (which PRIZM components were considered, and why they don't fit)
+4. [ ] Guideline doc at `llms/<slug>.md`, from the template
+5. [ ] Code at `components/ui/<slug>.tsx`
+6. [ ] Registry entry in `lib/components-registry.ts` with `status: "alpha"`
+7. [ ] `pnpm verify` passes
+8. [ ] Committed and pushed; tracker row and GitHub issue updated
 
 ## Tracker
 
