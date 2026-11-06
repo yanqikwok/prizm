@@ -31,17 +31,6 @@ built-on: [PRIZM component, or Base UI Primitive]
 
 [What the component does.] [Where it sits in PRIZM and its role in the AI design system.] Built on [PRIZM `Component` or Base UI `Primitive`].
 
-## UI visuals
-
-*Show what it looks like using live PRIZM renders or a Figma link, not crops of the source screen (screens stay out of git). Describe the default composition in a line or two.*
-
-- Preview: `[docs-site path or Figma link]`
-- [One or two lines on the default composition.]
-
-```tsx
-<ComponentName />
-```
-
 ## Sub-components
 
 *List each part a consumer can import. Delete this section if the component is a single element.*
