@@ -3,6 +3,7 @@ component: prompt-input
 slug: prompt-input
 status: alpha
 source: components/ui/prompt-input.tsx
+built-on: PRIZM Field
 ---
 
 # Prompt Input
