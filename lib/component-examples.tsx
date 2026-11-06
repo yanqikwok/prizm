@@ -1552,7 +1552,7 @@ const promptInputExample: ComponentExample = {
   PromptInputSubmit, PromptInputTextarea,
 } from "@/components/ui/prompt-input";
 
-export function Composer({ files, onAttach, onRemove, onSend, generating, onStop }) {
+export function Chatbox({ files, onAttach, onRemove, onSend, generating, onStop }) {
   return (
     <PromptInput
       onSubmit={onSend}

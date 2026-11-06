@@ -76,7 +76,7 @@ export const COMPONENTS: ComponentEntry[] = [
     name: "Prompt Input",
     category: "forms",
     description:
-      "Composer for sending prompts to an AI assistant: auto-growing text, attachments, send and stop.",
+      "Chatbox for sending prompts to an AI assistant: auto-growing text, attachments, send and stop.",
     status: "alpha",
     builtOn: "Base UI Field",
   },

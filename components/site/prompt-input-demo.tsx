@@ -23,7 +23,7 @@ function formatSize(bytes: number) {
     : `${(bytes / 1048576).toFixed(1)} MB`;
 }
 
-// A working composer: attach files (simulated reading), send, then a simulated
+// A working chatbox: attach files (simulated reading), send, then a simulated
 // response you can stop. Nothing leaves the page.
 function Playground() {
   const [value, setValue] = useState("");
@@ -204,7 +204,7 @@ const STATES: { label: string; note: string; props: StateProps }[] = [
   },
   {
     label: "Disabled",
-    note: "The whole composer is disabled.",
+    note: "The whole chatbox is disabled.",
     props: { disabled: true },
   },
 ];
