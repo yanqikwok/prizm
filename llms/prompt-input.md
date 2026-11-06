@@ -12,7 +12,7 @@ source-screen: contributions/source-screens/prompt-input/screen.png
 
 # Prompt Input
 
-The chatbox where a user types a prompt and sends it to an AI assistant. It grows as the user types, can hold file attachments, and its send button turns into a Stop button while a reply is being generated. It is the starting point of every conversation in the AI design system. Built on Base UI `Field`.
+The chatbox where a user types a prompt and sends it to an AI assistant. It grows as the user types, can hold file attachments, and its send button turns into a Stop button while a reply is being generated. Built on Base UI `Field`.
 
 ## UI visuals
 
