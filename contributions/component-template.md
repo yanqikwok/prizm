@@ -135,13 +135,15 @@ The canonical source lives at `components/ui/[slug].tsx`. Copy it into the consu
 
 ## Reuse check
 
-*PRIZM components considered before building this one (per PRIZM.md, "Reuse before you build"), and why each doesn't fit. Say which Base UI primitive is used, or why none fits.*
+*PRIZM components considered before building this one (per PRIZM.md, "Reuse before you build"), and why each doesn't fit. Then say which PRIZM components this one is built from, and use a Base UI part only where PRIZM has nothing for that part.*
 
 | PRIZM component | Why it doesn't fit |
 |---|---|
 | `[Component]` | [Reason] |
 
-Base UI primitive used: `[Primitive]`, or [why none fits].
+Built from PRIZM: `[Component]`, `[Component]`.
+
+Base UI part used (only where PRIZM has no component for it): `[Part]`, or none.
 
 ## Anatomy
 

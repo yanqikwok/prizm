@@ -1,11 +1,7 @@
 ---
 guideline: [slug]
 slug: [slug]
-type: guideline
-layer: ai-design-system
 status: alpha
-proposed-by: yanqikwok
-source-screen: contributions/source-screens/[file]
 applies-to: [[component-or-pattern-slug]]
 ---
 

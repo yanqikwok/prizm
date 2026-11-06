@@ -1,11 +1,7 @@
 ---
 pattern: [slug]
 slug: [slug]
-type: pattern
-layer: ai-design-system
 status: alpha
-proposed-by: yanqikwok
-source-screen: contributions/source-screens/[file]
 components: [[slug], [slug]]
 guidelines: [[slug]]
 ---
