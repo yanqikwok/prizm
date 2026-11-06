@@ -1,13 +1,8 @@
 ---
 component: [slug]
 slug: [slug]
-type: component
-layer: ai-design-system
 status: alpha
 source: components/ui/[slug].tsx
-built-on: Base UI [Primitive]
-proposed-by: yanqikwok
-source-screen: contributions/source-screens/[file]
 ---
 
 <!--

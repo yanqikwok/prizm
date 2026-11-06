@@ -12,4 +12,4 @@ contributions/source-screens/<screen-name>/
   screen.html
 ```
 
-Each component's guideline doc points at its screen through the `source-screen` frontmatter field.
+Each component's guideline doc names its screen in its "Source screen" section.
