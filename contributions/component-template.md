@@ -3,6 +3,7 @@ component: [slug]
 slug: [slug]
 status: alpha
 source: components/ui/[slug].tsx
+built-on: [PRIZM component, or Base UI Primitive]
 ---
 
 <!--
@@ -26,9 +27,9 @@ source: components/ui/[slug].tsx
 
 # [Component name]
 
-*One sentence: what the component does. Then one sentence on where it sits in PRIZM (primitive, composite, or extension-pack organism) and its role in the AI design system. End with the Base UI primitive it is built on.*
+*One sentence: what the component does. Then one sentence on where it sits in PRIZM (primitive, composite, or extension-pack organism) and its role in the AI design system. End with what it is built on: a PRIZM component, or a Base UI primitive when PRIZM has none.*
 
-[What the component does.] [Where it sits in PRIZM and its role in the AI design system.] Built on Base UI `[Primitive]`.
+[What the component does.] [Where it sits in PRIZM and its role in the AI design system.] Built on [PRIZM `Component` or Base UI `Primitive`].
 
 ## UI visuals
 

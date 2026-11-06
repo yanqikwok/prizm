@@ -42,11 +42,11 @@ In short, for each component:
   `COMPONENT_API` key to match a `stable` registry entry. Document props in the doc's
   "Props" table by hand instead; move them into `components-api.ts` when the component is
   promoted to stable.
-- **Mark every addition as a proposal.** A component doc uses the same four frontmatter fields as
-  PRIZM's own docs (`component`, `slug`, `status`, `source`), so it reads like one of them. Reviewers
-  can tell it is a fork addition from `status: alpha` and the "Proposed additions" section, and the
-  source screen is named in the doc's "Source screen" section. Pattern and guideline docs still use
-  the extra fields in their templates.
+- **Mark every addition as a proposal.** A component doc uses the same frontmatter fields as
+  PRIZM's own docs (`component`, `slug`, `status`, `source`, and `built-on` as in `llms/dialog.md`),
+  so it reads like one of them. Reviewers can tell it is a fork addition from `status: alpha` and the
+  "Proposed additions" section, and the source screen is named in the doc's "Source screen" section.
+  Pattern and guideline docs still use the extra fields in their templates.
 - **Additions to guidelines go in clearly labelled sections** (see the template), never by editing
   PRIZM's existing docs. If an existing PRIZM guideline seems wrong or incomplete, note it in the
   relevant component doc's "Open questions" section rather than changing it.
