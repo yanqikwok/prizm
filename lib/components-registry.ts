@@ -78,7 +78,7 @@ export const COMPONENTS: ComponentEntry[] = [
     description:
       "Chatbox for sending prompts to an AI assistant: auto-growing text, attachments, send and stop.",
     status: "alpha",
-    builtOn: "Base UI Field",
+    builtOn: "PRIZM Field",
   },
   {
     slug: "checkbox",
