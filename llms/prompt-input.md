@@ -5,14 +5,14 @@ type: component
 layer: ai-design-system
 status: alpha
 source: components/ui/prompt-input.tsx
-built-on: Base UI Field
+built-on: PRIZM Field (Base UI Field)
 proposed-by: yanqikwok
 source-screen: contributions/source-screens/prompt-input/screen.png
 ---
 
 # Prompt Input
 
-The chatbox where a user types a prompt and sends it to an AI assistant. It grows as the user types, can hold file attachments, and its send button turns into a Stop button while a reply is being generated. Built on Base UI `Field`.
+The chatbox where a user types a prompt and sends it to an AI assistant. It grows as the user types, can hold file attachments, and its send button turns into a Stop button while a reply is being generated. Built on PRIZM's `Field`, which is built on Base UI `Field`.
 
 ## UI visuals
 
@@ -188,14 +188,20 @@ The source is at `components/ui/prompt-input.tsx`. Copy it into your project at 
 | PRIZM component | Why it doesn't fit |
 |---|---|
 | `Textarea` | The closest match, but it is a standalone field with its own border, radius and focus outline, a minimum height of 80px, and a resize handle. The chatbox needs a plain text area that grows as the user types, inside a larger box that owns the border and the focus ring. Getting there would mean overriding `Textarea`'s own styles, which PRIZM's reuse rule does not allow. |
-| `Field` | The closest in behaviour, and the chatbox uses the same Base UI part. PRIZM's `Field` only lays out a label, hint and error around a separate control. The chatbox needs one box that holds the attachments, the text and the buttons together, and it needs sending rules (Enter, blocking, Stop) that `Field` doesn't have. |
+| `Field` | Used, not replaced. The chatbox is built on PRIZM's `Field` and `FieldControl` (see below). |
 | `Input` | One line only. Prompts are often longer. |
 | `Command` / `Combobox` | These let the user pick from a list. The chatbox sends free text. |
 | `Group` | Layout only. Used as the guide for the row of buttons. |
 
-Used inside the component: `Button` (attach, send, stop, remove) and `Spinner` (reading state).
+Used inside the component:
+- `Field` is the chatbox itself. It is shown as the `<form>`, and it gives the chatbox its focused, filled and disabled states and the label linking. Its grid layout and gap space out the attachments, the text area and the buttons.
+- `FieldControl` is the text area. It is shown as a `<textarea>` using the `render` prop (the Base UI part underneath is made for an `<input>`, so this is not its usual use, but it works and has been tested).
+- `Button` is used for attach, send, stop and remove.
+- `Spinner` is used for the reading state.
 
-Base UI part used: `Field`. `Field.Root` is shown as the `<form>` and `Field.Control` is shown as the `<textarea>`, using Base UI's `render` prop (Base UI has no separate textarea part). This gives the chatbox the same label linking and the same focused, filled and disabled states as PRIZM's other text fields. `Toolbar` was considered for the row of buttons and rejected: it gives the row a single Tab stop and moves between buttons with the arrow keys. That suits a long toolbar, but with two or three buttons users expect Tab to reach each one.
+The text area does not use PRIZM's `Textarea`. Its look would need to be overridden almost completely (border, background, shadow, padding, minimum height, radius, focus outline and text size), and PRIZM's reuse rule does not allow restyling a component's inside. See Open questions.
+
+Base UI is only used through PRIZM's `Field`. `Toolbar` was considered for the row of buttons and rejected: it gives the row a single Tab stop and moves between buttons with the arrow keys. That suits a long toolbar, but with two or three buttons users expect Tab to reach each one.
 
 ## Anatomy
 
@@ -250,5 +256,6 @@ The chatbox only shows attachments. Reading, uploading and checking files is the
 - **Brighter accent text.** The source colours the Send icon with a lighter accent than `accent`. This proposal uses `text-accent`. Contrast on `bg-surface` still needs to be checked in all four themes.
 - **Corner radius.** The source uses a 16px radius, but PRIZM's largest is `rounded-xl` (12px). Is 12px enough, or does PRIZM need a larger radius token?
 - **Resting border.** The source tints the border towards the accent colour. This proposal uses `border-border-strong`, to stay with the existing tokens.
+- **Bare `Textarea` variant.** The chatbox writes its own text area styles because PRIZM's `Textarea` has a border, background, shadow and minimum height that would all need overriding. Should `Textarea` get a bare variant (no border, background, shadow or minimum height, with optional auto-grow)? If so, the chatbox would use it.
 - **Scope selector.** Another chatbox in the source has a "search scope" row above the text area. It is left out for now. It could become a `PromptInputHeader` part later.
 - **Attachment chip.** `PromptInputAttachment` may move to the planned attachment-upload component once that exists.
