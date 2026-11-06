@@ -46,17 +46,23 @@ In short, for each component:
   PRIZM's own docs (`component`, `slug`, `status`, `source`, and `built-on` as in `llms/dialog.md`),
   so it reads like one of them. Reviewers can tell it is a fork addition from `status: alpha` and the
   "Proposed additions" section, and the source screen is named in the doc's "Source screen" section.
-  Pattern and guideline docs still use the extra fields in their templates.
+  Pattern and guideline docs use their own key (`pattern` or `guideline`), `slug` and `status`, plus
+  the links to the components, patterns and guidelines they relate to (see their templates).
 - **Additions to guidelines go in clearly labelled sections** (see the template), never by editing
   PRIZM's existing docs. If an existing PRIZM guideline seems wrong or incomplete, note it in the
   relevant component doc's "Open questions" section rather than changing it.
-- **Behaviour from Base UI, look from PRIZM.** For a component PRIZM doesn't
-  have, build on the matching Base UI primitive (`@base-ui-components/react/<part>`, imported as
+- **PRIZM components first, Base UI only when none fits.** Build a new component from PRIZM's
+  existing ones wherever one fits (`Button`, `Field` and `FieldControl`, `Spinner`, and so on). Do
+  not import Base UI directly for something a PRIZM component already wraps. Name the PRIZM
+  components you built from in the doc's reuse check.
+- **Behaviour from Base UI, look from PRIZM.** For a part PRIZM has no component for, build on the
+  matching Base UI primitive (`@base-ui-components/react/<part>`, imported as
   `import { X as BaseX } from "@base-ui-components/react/x"`, as in `components/ui/dialog.tsx`) for
   structure, keyboard handling and accessibility. All styling — colours, radius, spacing, type,
   motion — comes from PRIZM's tokens and existing component patterns, never Base UI's demo styles.
-  Note the primitive used in the doc's intro and in the registry's `builtOn` field. If no Base UI
-  primitive fits, say so in the doc's reuse check.
+  Note what the component is built on (a PRIZM component or a Base UI primitive) in the doc's intro,
+  in its `built-on` field and in the registry's `builtOn` field. If no Base UI primitive fits, say so
+  in the doc's reuse check.
 - **Semantic tokens only** — no raw colours. If a component needs a token PRIZM doesn't have, note it
   in the doc's "Open questions" section instead of adding one to `styles/tokens/`.
 - `pnpm check:links` scans code only, not Markdown — check links in guideline docs by hand and only
