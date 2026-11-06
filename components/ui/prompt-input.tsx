@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Field, FieldControl } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
-import { Field as BaseField } from "@base-ui-components/react/field";
 import { type VariantProps, cva } from "class-variance-authority";
 import { FileText, Paperclip, Send, Square, X } from "lucide-react";
 import {
@@ -59,7 +59,7 @@ const promptInputVariants = cva(
   [
     "mx-auto w-full rounded-xl border border-border-strong bg-surface px-4 pt-3 pb-2 shadow-md",
     "transition-[border-color,box-shadow]",
-    // Field state attributes from Base UI: data-focused while the textarea has focus.
+    // Field state attributes: data-focused is set while the textarea has focus.
     "data-[focused]:border-accent data-[focused]:ring-3 data-[focused]:ring-accent/20",
     "data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
   ],
@@ -140,14 +140,15 @@ export const PromptInput = forwardRef<HTMLFormElement, PromptInputProps>(
       <PromptInputContext.Provider
         value={{ value, setValue, canSubmit, status, onStop, disabled, maxLength, registerPending }}
       >
-        {/* Base UI Field owns the disabled / focused / filled state; it renders as the <form>. */}
-        <BaseField.Root
-          ref={ref as unknown as Ref<HTMLDivElement>}
+        {/* PRIZM Field owns the disabled / focused / filled state; it renders as the <form>.
+            Its grid layout and gap space out the attachments, text area and buttons. */}
+        <Field
           disabled={disabled}
           data-status={status}
           className={cn(promptInputVariants({ variant }), className)}
           render={
             <form
+              ref={ref}
               onSubmit={handleSubmit}
               aria-disabled={disabled || undefined}
               aria-busy={status === "generating" || undefined}
@@ -156,7 +157,7 @@ export const PromptInput = forwardRef<HTMLFormElement, PromptInputProps>(
           }
         >
           {children}
-        </BaseField.Root>
+        </Field>
       </PromptInputContext.Provider>
     );
   },
@@ -192,10 +193,10 @@ export const PromptInputTextarea = forwardRef<HTMLTextAreaElement, PromptInputTe
       }
     };
 
-    // Field.Control is typed for <input>; render swaps the element for a <textarea>.
+    // FieldControl is typed for <input>; render swaps the element for a <textarea>.
     // Value, change handling and disabled come from the Field; textarea-only props go on the element.
     return (
-      <BaseField.Control
+      <FieldControl
         ref={(node: HTMLInputElement | null) => {
           const el = node as unknown as HTMLTextAreaElement | null;
           innerRef.current = el;
@@ -221,7 +222,7 @@ export const PromptInputAttachments = forwardRef<HTMLDivElement, HTMLAttributes<
       ref={ref}
       role="group"
       aria-label="Attachments"
-      className={cn("mb-2 flex flex-wrap gap-2 empty:hidden", className)}
+      className={cn("flex flex-wrap gap-2 empty:hidden", className)}
       {...props}
     />
   ),
@@ -309,7 +310,7 @@ PromptInputAttachment.displayName = "PromptInputAttachment";
 
 export const PromptInputActions = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("mt-1 flex items-center gap-1", className)} {...props} />
+    <div ref={ref} className={cn("flex items-center gap-1", className)} {...props} />
   ),
 );
 PromptInputActions.displayName = "PromptInputActions";
