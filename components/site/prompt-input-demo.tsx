@@ -10,7 +10,7 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
 } from "@/components/ui/prompt-input";
-import { type ComponentProps, useEffect, useRef, useState } from "react";
+import { type ComponentProps, type ReactNode, useEffect, useRef, useState } from "react";
 
 type DemoFile = { id: string; name: string; size: string; status: "reading" | "ready" };
 
@@ -23,9 +23,9 @@ function formatSize(bytes: number) {
     : `${(bytes / 1048576).toFixed(1)} MB`;
 }
 
-// A working chatbox: attach files (simulated reading), send, then a simulated
-// response you can stop. Nothing leaves the page.
-function Playground() {
+// The default chatbox, fully working: attach files (simulated reading), send, then a simulated
+// reply you can stop. Nothing leaves the page.
+export function PromptInputPlayground() {
   const [value, setValue] = useState("");
   const [files, setFiles] = useState<DemoFile[]>([]);
   const [generating, setGenerating] = useState(false);
@@ -73,7 +73,8 @@ function Playground() {
   };
 
   return (
-    <div className="space-y-2">
+    // Fixed width: the preview frame sizes its content to fit, so the chatbox needs a width of its own.
+    <div className="w-178 space-y-2">
       <PromptInput
         value={value}
         onValueChange={setValue}
@@ -103,9 +104,9 @@ function Playground() {
           <PromptInputSubmit />
         </PromptInputActions>
       </PromptInput>
-      <p className="mx-auto max-w-178 text-xs text-fg-subtle" aria-live="polite">
+      <p className="text-xs text-fg-subtle" aria-live="polite">
         {generating
-          ? "Generating a response… press Stop, or keep typing your next prompt."
+          ? "Generating a reply… press Stop, or keep typing your next prompt."
           : last
             ? `Sent: “${last}”`
             : "Try it: type, attach files, press Enter to send, Shift+Enter for a new line."}
@@ -119,8 +120,8 @@ type StateProps = Omit<ComponentProps<typeof PromptInput>, "children"> & {
   files?: Omit<DemoFile, "id">[];
 };
 
-// A fixed state: the value is editable but sending does nothing.
-function State({ text = "", files = [], ...props }: StateProps) {
+// A fixed state: the text can be edited, but sending does nothing.
+function Fixed({ text = "", files = [], ...props }: StateProps) {
   const [value, setValue] = useState(text);
   return (
     <PromptInput value={value} onValueChange={setValue} onStop={() => {}} {...props}>
@@ -150,32 +151,41 @@ function State({ text = "", files = [], ...props }: StateProps) {
   );
 }
 
-const STATES: { label: string; note: string; props: StateProps }[] = [
+function VisualCard({
+  label,
+  note,
+  children,
+}: { label: string; note?: string; children: ReactNode }) {
+  return (
+    <div className="rounded-lg border border-border bg-bg-subtle p-6">
+      <p className="text-xs font-medium uppercase tracking-wider text-fg-subtle">{label}</p>
+      {note && <p className="mt-0.5 text-xs text-fg-muted">{note}</p>}
+      <div className="mt-4">{children}</div>
+    </div>
+  );
+}
+
+const VARIANTS: { label: string; props: StateProps }[] = [
+  { label: "Docked (default)", props: {} },
+  { label: "Hero", props: { variant: "hero" } },
+];
+
+const STATES: { label: string; note?: string; props: StateProps }[] = [
+  { label: "Default (empty)", props: {} },
   {
-    label: "Hero",
-    note: 'variant="hero" — centred on an empty screen; 800px max width.',
-    props: { variant: "hero" },
+    label: "Focus",
+    note: "The text area has focus. Shown here with the focus styles switched on.",
+    props: { className: "border-accent ring-3 ring-accent/20" },
   },
-  {
-    label: "Docked · empty",
-    note: "Default variant; 712px max width. Send is disabled until there is text.",
-    props: {},
-  },
-  {
-    label: "Has text",
-    note: "Send enables in the accent colour.",
-    props: { text: "Summarise the meeting notes in five bullet points" },
-  },
+  { label: "Has text", props: { text: "Summarise the meeting notes in five bullet points" } },
   {
     label: "Growing",
-    note: "Grows with its content up to 200px, then scrolls.",
     props: {
       text: "First, list the decisions.\nThen the open risks.\nThen the action items, with owners.\nThen the dates.\nKeep each line short.\nUse plain English.\nNo headings.\nEnd with next steps.",
     },
   },
   {
-    label: "Attachments · reading and ready",
-    note: "Send is blocked until every file has been read.",
+    label: "Attachments: reading and ready",
     props: {
       text: "What are the action items?",
       files: [
@@ -184,50 +194,42 @@ const STATES: { label: string; note: string; props: StateProps }[] = [
       ],
     },
   },
-  {
-    label: "Generating",
-    note: "Send becomes Stop. The text area stays enabled for the next prompt.",
-    props: { status: "generating", text: "And who owns each one?" },
-  },
+  { label: "Generating", props: { status: "generating", text: "And who owns each one?" } },
   {
     label: "Near the limit",
-    note: "maxLength={60}: the count appears at 90% of the limit.",
+    note: "Shown with a limit of 60 characters.",
     props: { maxLength: 60, text: "Draft a short reply that thanks the team for the update" },
   },
   {
     label: "Over the limit",
-    note: "The count turns danger and Send is blocked; typing is not cut off.",
+    note: "Shown with a limit of 40 characters.",
     props: {
       maxLength: 40,
       text: "Draft a short reply that thanks the team for the update and asks for dates",
     },
   },
-  {
-    label: "Disabled",
-    note: "The whole chatbox is disabled.",
-    props: { disabled: true },
-  },
+  { label: "Disabled", props: { disabled: true } },
 ];
 
-export function PromptInputDemo() {
+export function PromptInputVariants() {
   return (
-    // Fixed width so hero (800px) and docked (712px) keep their real sizes inside the preview frame,
-    // which sizes demos to their content and scrolls sideways when they are wider.
-    <div className="w-200 space-y-8">
-      <section className="space-y-3">
-        <p className="text-xs font-medium uppercase tracking-wider text-fg-subtle">Playground</p>
-        <Playground />
-      </section>
-      {STATES.map((state) => (
-        <section key={state.label} className="space-y-3">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-fg-subtle">
-              {state.label}
-            </p>
-            <p className="mt-0.5 text-xs text-fg-muted">{state.note}</p>
-          </div>
-          <State {...state.props} />
-        </section>
+    <div className="space-y-4">
+      {VARIANTS.map((v) => (
+        <VisualCard key={v.label} label={v.label}>
+          <Fixed {...v.props} />
+        </VisualCard>
+      ))}
+    </div>
+  );
+}
+
+export function PromptInputStates() {
+  return (
+    <div className="space-y-4">
+      {STATES.map((s) => (
+        <VisualCard key={s.label} label={s.label} note={s.note}>
+          <Fixed {...s.props} />
+        </VisualCard>
       ))}
     </div>
   );

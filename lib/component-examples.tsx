@@ -1,7 +1,11 @@
 import { ComboboxDemo } from "@/components/site/combobox-demo";
 import { CommandDemo } from "@/components/site/command-demo";
 import { PaginationDemo } from "@/components/site/pagination-demo";
-import { PromptInputDemo } from "@/components/site/prompt-input-demo";
+import {
+  PromptInputPlayground,
+  PromptInputStates,
+  PromptInputVariants,
+} from "@/components/site/prompt-input-demo";
 import { ToastDemo } from "@/components/site/toast-demo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -120,8 +124,14 @@ import { InboxIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
 export interface ComponentExample {
+  /** The default component, shown in the Preview frame. */
   preview: ReactNode;
   code: string;
+  /**
+   * Extra visual sections shown below the Preview (for example Variants and States). `doc` names a
+   * "## " section of llms/<slug>.md to show under the visuals (alpha components only).
+   */
+  sections?: { title: string; doc?: string; content: ReactNode }[];
 }
 
 const buttonExample: ComponentExample = {
@@ -1545,7 +1555,11 @@ export function Example() {
 };
 
 const promptInputExample: ComponentExample = {
-  preview: <PromptInputDemo />,
+  preview: <PromptInputPlayground />,
+  sections: [
+    { title: "Variants", doc: "Variants", content: <PromptInputVariants /> },
+    { title: "States", doc: "States", content: <PromptInputStates /> },
+  ],
   code: `import {
   PromptInput, PromptInputActions, PromptInputAttachButton,
   PromptInputAttachment, PromptInputAttachments, PromptInputCount,

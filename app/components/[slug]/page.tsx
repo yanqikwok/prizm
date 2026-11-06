@@ -2,7 +2,9 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { CodeBlock } from "@/components/site/code-block";
 import { ComponentPreview } from "@/components/site/component-preview";
+import { DocMarkdown } from "@/components/site/doc-markdown";
 import { Badge } from "@/components/ui/badge";
+import { type DocSection, findSection, getDocApi, readDocSections } from "@/lib/alpha-docs";
 import { EXAMPLES } from "@/lib/component-examples";
 import { COMMON_PROPS_NOTE, type PropSpec, getComponentApi } from "@/lib/components-api";
 import { COMPONENTS, getComponent } from "@/lib/components-registry";
@@ -43,11 +45,14 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
   if (!component) notFound();
 
   const example = EXAMPLES[slug];
-  const api = getComponentApi(slug);
   const isStable = component.status === "stable";
   // Alpha components ship source and a preview too; only planned ones have neither.
   const isShipped = component.status !== "planned";
   const source = isShipped ? readComponentSource(slug) : null;
+  // Alpha components have no entry in components-api.ts, so their props and guideline sections
+  // are read from the hand-written doc (llms/<slug>.md) and shown on the page.
+  const doc = !isStable && isShipped ? readDocSections(slug) : null;
+  const api = getComponentApi(slug) ?? getDocApi(doc);
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
@@ -81,27 +86,29 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
             <ComponentPreview>{example.preview}</ComponentPreview>
           </section>
 
+          {example.sections?.map((extra) => {
+            const text = extra.doc ? findSection(doc, extra.doc) : undefined;
+            return (
+              <section key={extra.title}>
+                <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-fg-subtle">
+                  {extra.title}
+                </h2>
+                {extra.content}
+                {text && (
+                  <div className="mt-4">
+                    <DocMarkdown markdown={text.body} />
+                  </div>
+                )}
+              </section>
+            );
+          })}
+
           <section>
             <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-fg-subtle">
               Code
             </h2>
             <CodeBlock code={example.code} language="tsx" />
           </section>
-
-          {!isStable && !api && (
-            <section>
-              <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-fg-subtle">
-                Props
-              </h2>
-              <p className="text-sm text-fg-muted">
-                Alpha components document their props by hand in{" "}
-                <code className="rounded bg-bg-muted px-1.5 py-0.5 font-mono text-xs">
-                  llms/{component.slug}.md
-                </code>{" "}
-                until they are promoted to stable.
-              </p>
-            </section>
-          )}
 
           {api && (
             <section>
@@ -140,6 +147,10 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
             </section>
           )}
 
+          {GUIDELINE_SECTIONS.map((heading) => (
+            <DocBlock key={heading} doc={doc} heading={heading} />
+          ))}
+
           <section>
             <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-fg-subtle">
               Source
@@ -161,6 +172,10 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
             {source && <CodeBlock code={source} language="tsx" />}
           </section>
 
+          {MAINTAINER_SECTIONS.map((heading) => (
+            <DocBlock key={heading} doc={doc} heading={heading} />
+          ))}
+
           {component.javafx && <JavaFxSection slug={component.slug} />}
         </div>
       ) : (
@@ -180,6 +195,35 @@ export default async function ComponentPage({ params }: { params: Promise<{ slug
         </div>
       )}
     </div>
+  );
+}
+
+// Sections of an alpha component's doc (llms/<slug>.md) shown on its page, in order. The preview,
+// code, props, sub-components and source sections are built the same way as for stable components.
+const GUIDELINE_SECTIONS = [
+  "When to use",
+  "When NOT to use",
+  "Anatomy",
+  "Visual treatment",
+  "Content guidelines",
+  "Do / Don't",
+  "Accessibility",
+  "Supplementary guidelines",
+];
+
+// Reviewer-facing sections: why the component is new, and what still needs a decision.
+const MAINTAINER_SECTIONS = ["Reuse check", "Open questions"];
+
+function DocBlock({ doc, heading }: { doc: DocSection[] | null; heading: string }) {
+  const section = findSection(doc, heading);
+  if (!section) return null;
+  return (
+    <section>
+      <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-fg-subtle">
+        {heading}
+      </h2>
+      <DocMarkdown markdown={section.body} />
+    </section>
   );
 }
 
