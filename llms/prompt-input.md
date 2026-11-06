@@ -10,21 +10,6 @@ built-on: PRIZM Field
 
 The chatbox where a user types a prompt and sends it to an AI assistant. It grows as the user types, can hold file attachments, and its send button turns into a Stop button while a reply is being generated. Built on PRIZM's `Field`, which is built on Base UI `Field`.
 
-## UI visuals
-
-- Preview: `/components/prompt-input` on the docs site (run `pnpm dev`): a working playground plus every state, in all four themes via "Compare all variants".
-- A rounded box with the text area on top and a row of buttons underneath: attach on the left, send on the right. Attachments, when there are any, sit above the text area as small chips.
-
-```tsx
-<PromptInput onSubmit={send}>
-  <PromptInputTextarea placeholder="Ask anything" aria-label="Prompt" />
-  <PromptInputActions>
-    <PromptInputAttachButton onFilesSelected={attach} />
-    <PromptInputSubmit />
-  </PromptInputActions>
-</PromptInput>
-```
-
 ## Sub-components
 
 - `PromptInput` — the chatbox itself. Holds the text, the status and the disabled state.
