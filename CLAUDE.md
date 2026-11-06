@@ -41,7 +41,8 @@ In short, for each component:
 - **Do not add alpha components to `lib/components-api.ts`.** `pnpm audit:components` requires every
   `COMPONENT_API` key to match a `stable` registry entry. Document props in the doc's
   "Props" table by hand instead; move them into `components-api.ts` when the component is
-  promoted to stable.
+  promoted to stable. The docs-site page for an alpha component reads that doc (`lib/alpha-docs.ts`)
+  to show its props, sub-components and guideline sections, so keep the doc in the template's shape.
 - **Mark every addition as a proposal.** A component doc uses the same frontmatter fields as
   PRIZM's own docs (`component`, `slug`, `status`, `source`, and `built-on` as in `llms/dialog.md`),
   so it reads like one of them. Reviewers can tell it is a fork addition from `status: alpha` and the

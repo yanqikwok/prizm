@@ -33,7 +33,7 @@ built-on: [PRIZM component, or Base UI Primitive]
 
 ## Sub-components
 
-*List each part a consumer can import. Delete this section if the component is a single element.*
+*List each part a consumer can import, one bullet each in the form "`Name` — description". The docs-site page reads these bullets, so keep that form. Delete this section if the component is a single element.*
 
 - `[Name]` — root provider
 - `[NameTrigger]` — [purpose]
@@ -106,11 +106,17 @@ built-on: [PRIZM component, or Base UI Primitive]
 
 ## Props
 
-*Hand-write the table while the component is alpha.*
+*Hand-write the tables while the component is alpha. The docs-site page reads them, so keep this shape: one table for the root's props, then a "### `Name`" heading and a table for each sub-component that has props of its own (a sentence under the heading is added to that sub-component's description).*
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
 | `className` | `string` | — | Additional Tailwind classes, merged with the component's defaults via `cn()`. |
+
+### `[NameTrigger]`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `[prop]` | `[type]` | — | [What it does.] |
 
 _Hand-written while this component is alpha. Moves to `lib/components-api.ts` when promoted to stable._
 

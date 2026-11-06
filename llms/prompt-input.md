@@ -138,7 +138,7 @@ const [files, setFiles] = useState<Attached[]>([]);
 | `maxLength` | `number` | — | A soft character limit. Shows `PromptInputCount` near the limit and stops sending when over it. |
 | `className` | `string` | — | Extra Tailwind classes, merged with the defaults using `cn()`. |
 
-`PromptInputAttachment`
+### `PromptInputAttachment`
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
@@ -150,9 +150,25 @@ const [files, setFiles] = useState<Attached[]>([]);
 | `onRemove` | `() => void` | — | Shows the remove button when set. |
 | `removeLabel` | `string` | `"Remove [name]"` | The accessible name of the remove button. |
 
-`PromptInputAttachButton`: `onFilesSelected(files: File[])`, `accept`, `multiple` (default `true`), `label` (default `"Attach files"`).
-`PromptInputSubmit`: `sendLabel` (default `"Send"`), `stopLabel` (default `"Stop generating"`).
-`PromptInputTextarea` accepts all `<textarea>` props except `value`, `defaultValue`, `maxLength` and `disabled`. Those are set by `PromptInput`.
+### `PromptInputAttachButton`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `onFilesSelected` | `(files: File[]) => void` | — | Called with the files the user picked. |
+| `accept` | `string` | — | Limits the file types in the picker, for example `.pdf,application/pdf`. |
+| `multiple` | `boolean` | `true` | Whether the user can pick more than one file. |
+| `label` | `string` | `"Attach files"` | The accessible name and tooltip of the button. |
+
+### `PromptInputSubmit`
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `sendLabel` | `string` | `"Send"` | The accessible name and tooltip of the Send button. |
+| `stopLabel` | `string` | `"Stop generating"` | The accessible name and tooltip of the Stop button. |
+
+### `PromptInputTextarea`
+
+Accepts all `<textarea>` props except `value`, `defaultValue`, `maxLength` and `disabled`. Those are set by `PromptInput`.
 
 _Hand-written while this component is alpha. Moves to `lib/components-api.ts` when promoted to stable._
 
