@@ -1,13 +1,8 @@
 ---
 component: prompt-input
 slug: prompt-input
-type: component
-layer: ai-design-system
 status: alpha
 source: components/ui/prompt-input.tsx
-built-on: PRIZM Field (Base UI Field)
-proposed-by: yanqikwok
-source-screen: contributions/source-screens/prompt-input/screen.png
 ---
 
 # Prompt Input
