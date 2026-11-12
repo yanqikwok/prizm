@@ -11,6 +11,7 @@ import {
   type FormHTMLAttributes,
   type HTMLAttributes,
   type KeyboardEvent,
+  type MutableRefObject,
   type ReactNode,
   type Ref,
   type TextareaHTMLAttributes,
@@ -40,6 +41,7 @@ interface PromptInputContextValue {
   disabled: boolean;
   maxLength?: number;
   registerPending: () => () => void;
+  textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
 }
 
 const PromptInputContext = createContext<PromptInputContextValue | null>(null);
@@ -125,6 +127,9 @@ export const PromptInput = forwardRef<HTMLFormElement, PromptInputProps>(
       return () => setPendingCount((n) => n - 1);
     }, []);
 
+    // The text area registers itself here so other parts can move focus to it.
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
     const overLimit = maxLength !== undefined && value.length > maxLength;
     const canSubmit =
       !disabled && status === "idle" && value.trim().length > 0 && pendingCount === 0 && !overLimit;
@@ -138,7 +143,17 @@ export const PromptInput = forwardRef<HTMLFormElement, PromptInputProps>(
 
     return (
       <PromptInputContext.Provider
-        value={{ value, setValue, canSubmit, status, onStop, disabled, maxLength, registerPending }}
+        value={{
+          value,
+          setValue,
+          canSubmit,
+          status,
+          onStop,
+          disabled,
+          maxLength,
+          registerPending,
+          textareaRef,
+        }}
       >
         {/* PRIZM Field owns the disabled / focused / filled state; it renders as the <form>.
             Its grid layout and gap space out the attachments, text area and buttons. */}
@@ -171,7 +186,7 @@ export type PromptInputTextareaProps = Omit<
 
 export const PromptInputTextarea = forwardRef<HTMLTextAreaElement, PromptInputTextareaProps>(
   ({ className, onKeyDown, rows = 1, ...props }, ref) => {
-    const { value, setValue, canSubmit } = usePromptInput("PromptInputTextarea");
+    const { value, setValue, canSubmit, textareaRef } = usePromptInput("PromptInputTextarea");
     const innerRef = useRef<HTMLTextAreaElement | null>(null);
 
     // Grow with the content up to MAX_TEXTAREA_HEIGHT; reset when the value is cleared.
@@ -200,6 +215,7 @@ export const PromptInputTextarea = forwardRef<HTMLTextAreaElement, PromptInputTe
         ref={(node: HTMLInputElement | null) => {
           const el = node as unknown as HTMLTextAreaElement | null;
           innerRef.current = el;
+          textareaRef.current = el;
           assignRef(ref, el);
         }}
         value={value}
@@ -396,13 +412,36 @@ export interface PromptInputSubmitProps {
 
 export const PromptInputSubmit = forwardRef<HTMLButtonElement, PromptInputSubmitProps>(
   ({ sendLabel = "Send", stopLabel = "Stop generating", className }, ref) => {
-    const { canSubmit, status, onStop, disabled } = usePromptInput("PromptInputSubmit");
+    const { canSubmit, status, onStop, disabled, textareaRef } =
+      usePromptInput("PromptInputSubmit");
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
+    const wasGenerating = useRef(false);
+
+    // When a reply ends (finished or stopped) and the button is now off, the browser would drop
+    // focus to the page. Move it to the text area, where the next prompt is written.
+    useLayoutEffect(() => {
+      if (status === "generating") {
+        wasGenerating.current = true;
+        return;
+      }
+      if (!wasGenerating.current) return;
+      wasGenerating.current = false;
+      const button = buttonRef.current;
+      if (button && document.activeElement === button && button.disabled) {
+        textareaRef.current?.focus();
+      }
+    }, [status, textareaRef]);
+
+    const setButtonRef = (node: HTMLButtonElement | null) => {
+      buttonRef.current = node;
+      assignRef(ref, node);
+    };
 
     // While a response is generating, the send button becomes Stop.
     if (status === "generating") {
       return (
         <Button
-          ref={ref}
+          ref={setButtonRef}
           variant="subtle"
           size="icon"
           disabled={disabled}
@@ -418,7 +457,7 @@ export const PromptInputSubmit = forwardRef<HTMLButtonElement, PromptInputSubmit
 
     return (
       <Button
-        ref={ref}
+        ref={setButtonRef}
         type="submit"
         variant="ghost"
         size="icon"

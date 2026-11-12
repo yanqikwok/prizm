@@ -73,6 +73,7 @@ There is no attachment error state. The product's file picker must only allow th
 - **Keyboard and focus**
   - Tab goes in the normal order: attachment remove buttons, the text area, Attach, then Send or Stop.
   - Buttons that are off use the native `disabled` attribute, so Tab skips them.
+  - When a reply ends (finished or stopped) while focus is on the Send / Stop button, focus moves to the text area, so it is not lost when the button turns off. Focus anywhere else is left alone.
   - Enter sends and Shift+Enter adds a new line. Enter is ignored while the user is composing text with an input method (IME), so Chinese, Japanese and Korean typing works.
 - **State and announcements**
   - While a reply is generating, the form is marked `aria-busy`.
