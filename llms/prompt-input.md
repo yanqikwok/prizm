@@ -8,7 +8,7 @@ built-on: PRIZM Field
 
 # Prompt Input
 
-The chatbox where a user types a prompt and sends it to an AI assistant. It grows as the user types, can hold file attachments, and its send button turns into a Stop button while a reply is being generated. Built on PRIZM's `Field`, which is built on Base UI `Field`.
+The chatbox where a user types a prompt and sends it to an AI assistant. It grows as the user types, can hold file attachments, and its send button turns into a Stop button while a reply is being generated. Built from PRIZM's `Field` (the chatbox, with its focused, filled and disabled states), `FieldControl` (the text area, rendered as a `<textarea>`), `Button` (attach, send, stop, remove) and `Spinner` (the reading state). Base UI is used only through `Field`.
 
 ## Sub-components
 
@@ -28,7 +28,7 @@ The chatbox where a user types a prompt and sends it to an AI assistant. It grow
 
 ## When NOT to use
 
-- A multi-line field that is sent together with the rest of a form: use `Textarea` inside `Field`.
+- A multi-line field that is sent together with the rest of a form: use `Textarea` inside `Field`. `Textarea` is a standalone field with its own border, radius, focus outline, 80px minimum height and resize handle. The chatbox needs a plain text area that grows as the user types, inside a box that owns the border and focus ring, and overriding `Textarea`'s styles is not allowed by PRIZM's reuse rule (see Open questions).
 - A single-line search box: use `Input`.
 - Choosing from a list of commands or results as the user types: use `Command` or `Combobox`.
 
@@ -176,53 +176,6 @@ _Hand-written while this component is alpha. Moves to `lib/components-api.ts` wh
 
 The source is at `components/ui/prompt-input.tsx`. Copy it into your project at the same path, together with `components/ui/button.tsx` and `components/ui/spinner.tsx`. Required packages: `@base-ui-components/react`, `class-variance-authority`, `clsx`, `tailwind-merge`, `lucide-react`.
 
----
-
-# Proposed additions
-
-## Reuse check
-
-| PRIZM component | Why it doesn't fit |
-|---|---|
-| `Textarea` | The closest match, but it is a standalone field with its own border, radius and focus outline, a minimum height of 80px, and a resize handle. The chatbox needs a plain text area that grows as the user types, inside a larger box that owns the border and the focus ring. Getting there would mean overriding `Textarea`'s own styles, which PRIZM's reuse rule does not allow. |
-| `Field` | Used, not replaced. The chatbox is built on PRIZM's `Field` and `FieldControl` (see below). |
-| `Input` | One line only. Prompts are often longer. |
-| `Command` / `Combobox` | These let the user pick from a list. The chatbox sends free text. |
-| `Group` | Layout only. Used as the guide for the row of buttons. |
-
-Used inside the component:
-- `Field` is the chatbox itself. It is shown as the `<form>`, and it gives the chatbox its focused, filled and disabled states and the label linking. Its grid layout and gap space out the attachments, the text area and the buttons.
-- `FieldControl` is the text area. It is shown as a `<textarea>` using the `render` prop (the Base UI part underneath is made for an `<input>`, so this is not its usual use, but it works and has been tested).
-- `Button` is used for attach, send, stop and remove.
-- `Spinner` is used for the reading state.
-
-The text area does not use PRIZM's `Textarea`. Its look would need to be overridden almost completely (border, background, shadow, padding, minimum height, radius, focus outline and text size), and PRIZM's reuse rule does not allow restyling a component's inside. See Open questions.
-
-Base UI is only used through PRIZM's `Field`. `Toolbar` was considered for the row of buttons and rejected: it gives the row a single Tab stop and moves between buttons with the arrow keys. That suits a long toolbar, but with two or three buttons users expect Tab to reach each one.
-
-## Anatomy
-
-1. **Box**: the surface. Owns the border, radius, shadow and focus ring.
-2. **Attachments row** (optional): file chips above the text area.
-3. **Text area**: where the prompt is written. Grows up to 200px.
-4. **Buttons row**: attach on the left; count and send or stop on the right.
-
-## Content guidelines
-
-- Placeholder: a short invitation in sentence case, with no full stop ("Ask anything"). Once a file is attached, change it to match ("Ask about this file").
-- Keep the placeholder under about 40 characters, so it fits on one line at the docked width on small screens.
-- Button labels are verbs: "Send", "Stop generating", "Attach files", "Remove [file name]".
-- Put notices (such as "AI may make mistakes" or a classification marking) outside the chatbox, in a footnote under it. Don't put them in the placeholder.
-
-## Do / Don't
-
-| Do | Don't |
-|---|---|
-| Keep the text area on while a reply is generating, so the user can write the next prompt. | Turn off the whole chatbox while a reply is generating. |
-| Limit the file types with `accept` on `PromptInputAttachButton`. | Accept any file and show an error after upload. |
-| Use `variant="hero"` on the empty screen and `docked` once the conversation starts. | Use `hero` under a conversation. The wider box won't line up with the messages. |
-| Give the text area an `aria-label`. | Use the placeholder as the only label. |
-
 ## Supplementary guidelines
 
 ### Generating and Stop
@@ -237,15 +190,12 @@ PRIZM does not set a limit. It depends on the product, and on the model's size a
 
 The chatbox only shows attachments. Reading, uploading and checking files is the product's job. Drag and drop is not part of this component. A separate attachment-upload component will cover it.
 
-## Related
+### Wording
 
-- **Patterns that use this component:** none yet
-- **Guidelines that apply:** none yet
-
-## Source screen
-
-- Screen: `contributions/source-screens/prompt-input/screen.png` (with `screen.html`). It shows the chatbox in the main area of an AI assistant web app: centred under a heading on the empty screen, and at the bottom of the message thread once a conversation starts. The screenshot shows only the focused, empty state; the other states come from the prototype's code in `screen.html`.
-- Product / zone: Enterprise, dark mode. No extension pack.
+- Placeholder: a short invitation in sentence case, with no full stop ("Ask anything"). Once a file is attached, change it to match ("Ask about this file").
+- Keep the placeholder under about 40 characters, so it fits on one line at the docked width on small screens.
+- Button labels are verbs: "Send", "Stop generating", "Attach files", "Remove [file name]".
+- Put notices (such as "AI may make mistakes" or a classification marking) outside the chatbox, in a footnote under it. Don't put them in the placeholder.
 
 ## Open questions
 
