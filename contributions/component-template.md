@@ -118,7 +118,7 @@ built-on: [PRIZM component, or Base UI Primitive]
 *Props are the settings a developer passes to the component, such as `variant="danger"` or `disabled`. This section lists them so developers and AI assistants don't have to read the code. Write it by hand while the component is alpha. The docs site builds the component's props table from it, so keep this shape:*
 
 - *First table: the props of the main component (the root).*
-- *Then one `### `SubComponentName`` heading and table for each sub-component that has props of its own. Skip sub-components that have none. A sentence under the heading is shown as that sub-component's description.*
+- *Then, for each sub-component that has props of its own, a `###` heading with its name in backticks, and a table. Skip sub-components that have none. A sentence under the heading is shown as that sub-component's description.*
 - *List only the props this component adds. Standard HTML attributes (`id`, `aria-*`, `onClick`…) are passed through, so don't list them.*
 - *Types and defaults must match the code.*
 
