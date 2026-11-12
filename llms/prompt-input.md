@@ -8,7 +8,7 @@ built-on: PRIZM Field
 
 # Prompt Input
 
-The chatbox where a user types a prompt and sends it to an AI assistant. It grows as the user types, can hold file attachments, and its send button turns into a Stop button while a reply is being generated. Built from PRIZM's `Field` (the chatbox, with its focused, filled and disabled states), `FieldControl` (the text area, rendered as a `<textarea>`), `Button` (attach, send, stop, remove) and `Spinner` (the reading state). Base UI is used only through `Field`.
+The chatbox where a user types a prompt and sends it to an AI assistant. It grows as the user types, can hold file attachments, and its send button turns into a Stop button while a reply is being generated. Built from PRIZM's `Field` (the chatbox, with its focused, filled and disabled states), `FieldControl` (the text area, rendered as a `<textarea>`), `Button` (attach, send, stop, remove) and `Spinner` (the reading state).
 
 ## Sub-components
 
