@@ -66,13 +66,19 @@ There is no attachment error state. The product's file picker must only allow th
 
 ## Accessibility
 
-- The chatbox is a form, and the text area is the field inside it. Give the text area a name with `aria-label`, or put PRIZM's `FieldLabel` inside the chatbox and it is linked automatically. A placeholder is not a label.
-- Tab goes in the normal order: attachment remove buttons, then the text area, then Attach, then Send or Stop. Buttons that are off are skipped.
-- Every icon button has an `aria-label`: "Attach files", "Send", "Stop generating", "Remove [file name]". You can change all of them for other languages.
-- Enter sends and Shift+Enter adds a new line. Enter is ignored while the user is still composing text with an input method (IME), so Chinese, Japanese and Korean typing works.
-- Attachments sit in a group (`role="group"`) labelled "Attachments". A chip that is still reading is marked `aria-busy`, and its `Spinner` is announced to screen readers.
-- While a reply is generating, the form is marked `aria-busy`. The count is announced politely (`aria-live="polite"`), so screen reader users hear when they get close to the limit.
-- Buttons that are off use the native `disabled` attribute, so they cannot be reached with Tab.
+- **Name and role**
+  - The chatbox is a form and the text area is its field. Name the text area with `aria-label`, or put PRIZM's `FieldLabel` inside the chatbox and it is linked automatically. A placeholder is not a label.
+  - Every icon button has an `aria-label`: "Attach files", "Send", "Stop generating", "Remove [file name]". All of them can be changed for other languages.
+  - Attachments sit in a group (`role="group"`) labelled "Attachments".
+- **Keyboard and focus**
+  - Tab goes in the normal order: attachment remove buttons, the text area, Attach, then Send or Stop.
+  - Buttons that are off use the native `disabled` attribute, so Tab skips them.
+  - Enter sends and Shift+Enter adds a new line. Enter is ignored while the user is composing text with an input method (IME), so Chinese, Japanese and Korean typing works.
+- **State and announcements**
+  - While a reply is generating, the form is marked `aria-busy`.
+  - A chip that is still reading is marked `aria-busy`, and its `Spinner` is announced.
+  - The character count is a polite live region (`aria-live="polite"`), so screen reader users hear when they get close to the limit.
+  - The chatbox does not announce the reply itself, or that it has finished or failed. The product should do that, for example with a polite live region (`role="status"`) around the message list.
 
 ## Examples
 

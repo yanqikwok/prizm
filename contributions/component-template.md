@@ -98,11 +98,18 @@ built-on: [PRIZM component, or Base UI Primitive]
 
 ## Accessibility
 
-*The role or Base UI primitive it wraps, keyboard behaviour, and required `aria-*` labels, live-region behaviour and focus management.*
+*What a developer needs to know or do to make this component accessible, and what it already does for them. Delete points that don't apply. Delete the whole section if the component is purely presentational.*
 
-- [Role / Base UI primitive it wraps.]
-- [Keyboard behaviour: keys and what they do.]
-- [Required `aria-*` labels, live-region behaviour, focus management.]
+- **Name and role**
+  - [The role, and the PRIZM component or Base UI part it wraps.]
+  - [What gives it an accessible name. Icon-only controls need an `aria-label`.]
+- **Keyboard and focus**
+  - [Keys and what they do (Tab, Enter, Space, Escape, arrows). Every action works without a mouse.]
+  - [Where focus goes when an overlay opens or closes or an action completes. Overlays return focus to the trigger on close.]
+  - [The focus ring stays visible. Never remove the outline without a replacement.]
+- **State and announcements**
+  - [States assistive technology can tell: errors (`aria-invalid` with `aria-describedby`), disabled, busy, pressed or expanded. Never rely on colour alone.]
+  - [Content that changes without the user acting (streaming, loading, results): a polite live region (`role="status"`), or `role="alert"` for urgent errors only.]
 
 ## Examples
 
