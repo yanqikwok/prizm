@@ -115,17 +115,23 @@ built-on: [PRIZM component, or Base UI Primitive]
 
 ## Props
 
-*Hand-write the tables while the component is alpha. The docs-site page reads them, so keep this shape: one table for the root's props, then a "### `Name`" heading and a table for each sub-component that has props of its own (a sentence under the heading is added to that sub-component's description).*
+*Props are the settings a developer passes to the component, such as `variant="danger"` or `disabled`. This section lists them so developers and AI assistants don't have to read the code. Write it by hand while the component is alpha. The docs site builds the component's props table from it, so keep this shape:*
+
+- *First table: the props of the main component (the root).*
+- *Then one `### `SubComponentName`` heading and table for each sub-component that has props of its own. Skip sub-components that have none. A sentence under the heading is shown as that sub-component's description.*
+- *List only the props this component adds. Standard HTML attributes (`id`, `aria-*`, `onClick`…) are passed through, so don't list them.*
+- *Types and defaults must match the code.*
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
+| `[prop]` | `[type]` | `[default, or —]` | [What it does, in one line.] |
 | `className` | `string` | — | Additional Tailwind classes, merged with the component's defaults via `cn()`. |
 
-### `[NameTrigger]`
+### `[SubComponentName]`
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `[prop]` | `[type]` | — | [What it does.] |
+| `[prop]` | `[type]` | `[default, or —]` | [What it does, in one line.] |
 
 _Hand-written while this component is alpha. Moves to `lib/components-api.ts` when promoted to stable._
 
