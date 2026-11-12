@@ -154,4 +154,4 @@ guidelines: [[slug]]
 
 *Only what needs a decision from PRIZM's maintainers: components this pattern needs that don't exist yet, new tokens, overlap with an existing template. Delete this section if there is nothing.*
 
-- [Question.]
+- **[The question, as a question?]** [Elaboration: the context, what this proposal does for now, and what would change if the answer is yes.]

@@ -59,7 +59,7 @@ function assignRef<T>(ref: Ref<T> | undefined, node: T) {
 
 const promptInputVariants = cva(
   [
-    "mx-auto w-full rounded-xl border border-border-strong bg-surface px-4 pt-3 pb-2 shadow-md",
+    "mx-auto w-full rounded-xl border border-accent/40 bg-surface px-4 pt-3 pb-2 shadow-md",
     "transition-[border-color,box-shadow]",
     // Field state attributes: data-focused is set while the textarea has focus.
     "data-[focused]:border-accent data-[focused]:ring-3 data-[focused]:ring-accent/20",

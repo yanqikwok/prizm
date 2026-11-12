@@ -28,7 +28,7 @@ The chatbox where a user types a prompt and sends it to an AI assistant. It grow
 
 ## When NOT to use
 
-- A multi-line field that is sent together with the rest of a form: use `Textarea` inside `Field`. `Textarea` is a standalone field with its own border, radius, focus outline, 80px minimum height and resize handle. The chatbox needs a plain text area that grows as the user types, inside a box that owns the border and focus ring, and overriding `Textarea`'s styles is not allowed by PRIZM's reuse rule (see Open questions).
+- A multi-line field that is sent together with the rest of a form: use `Textarea` inside `Field`. `Textarea` is a standalone field with its own border, radius, focus outline, 80px minimum height and resize handle. The chatbox needs a plain text area that grows as the user types, inside a box that owns the border and focus ring, and overriding `Textarea`'s styles would fight its own defaults, so the chatbox has its own plain text area.
 - A single-line search box: use `Input`.
 - Choosing from a list of commands or results as the user types: use `Command` or `Combobox`.
 
@@ -56,11 +56,11 @@ There is no attachment error state. The product's file picker must only allow th
 
 ## Visual treatment
 
-- Box: `bg-surface`, `border-border-strong`, `rounded-xl`, `shadow-md`. Padding is 16px at the sides, 12px at the top, 8px at the bottom.
+- Box: `bg-surface`, `border-accent/40` (a border tinted towards the accent colour, so it reads as part of the AI surface; full `border-accent` is kept for focus), `rounded-xl`, `shadow-md`. Padding is 16px at the sides, 12px at the top, 8px at the bottom.
 - Focus: `border-accent` and `ring-3 ring-accent/20` while the text area has focus.
 - Text: `text-base` (16px) in `text-fg`. Placeholder in `text-fg-subtle`.
 - Attachment chip: `bg-bg-subtle`, `border-border`, `rounded-lg`. Name in `text-sm font-semibold text-fg`, info line in `text-xs text-fg-subtle`.
-- Send: ghost icon `Button` in `text-accent`. Stop: subtle icon `Button`. Attach: ghost icon `Button` in `text-fg-muted`.
+- Send: ghost icon `Button` in `text-accent`. On `bg-surface` the icon is 4.74:1 or better in all four themes (lowest: Enterprise dark), and 4.79:1 or better on the `bg-bg-muted` hover fill. Both pass the 3:1 needed for icons (WCAG 1.4.11). Stop: subtle icon `Button`. Attach: ghost icon `Button` in `text-fg-muted`.
 - Count: `text-xs text-fg-subtle`, and `text-danger` when over the limit.
 - C3 and Enterprise look the same; the tokens handle the difference. It is not a glass surface: the chatbox is an input, so it stays solid in C3.
 
@@ -206,10 +206,4 @@ The chatbox only shows attachments. Reading, uploading and checking files is the
 
 ## Open questions
 
-- **Soft accent fill.** The source uses a see-through accent fill for the focus ring and button hovers. PRIZM has no `accent-subtle` token, so this proposal uses `ring-accent/20` (an opacity setting on `accent`, the way `bg-fg/5` is used elsewhere). Should PRIZM add an `accent-subtle` token?
-- **Brighter accent text.** The source colours the Send icon with a lighter accent than `accent`. This proposal uses `text-accent`. Contrast on `bg-surface` still needs to be checked in all four themes.
-- **Corner radius.** The source uses a 16px radius, but PRIZM's largest is `rounded-xl` (12px). Is 12px enough, or does PRIZM need a larger radius token?
-- **Resting border.** The source tints the border towards the accent colour. This proposal uses `border-border-strong`, to stay with the existing tokens.
-- **Bare `Textarea` variant.** The chatbox writes its own text area styles because PRIZM's `Textarea` has a border, background, shadow and minimum height that would all need overriding. Should `Textarea` get a bare variant (no border, background, shadow or minimum height, with optional auto-grow)? If so, the chatbox would use it.
-- **Scope selector.** Another chatbox in the source has a "search scope" row above the text area. It is left out for now. It could become a `PromptInputHeader` part later.
-- **Attachment chip.** `PromptInputAttachment` may move to the planned attachment-upload component once that exists.
+- **Should PRIZM have an icon button variant?** `Button` has `size="icon"` (a square 36×36), but no variant made for icon buttons, so every icon button in the chatbox is a `ghost` or `subtle` `Button` with overrides in `className`: a smaller `h-6 w-6` for the remove button, `text-fg-muted` or `text-accent` for the icon colour, and icon sizes set by hand (`h-3.5 w-3.5`, `h-4.5 w-4.5`). A proposed icon button variant would fix the icon size, the hit area, the icon colour options (muted, accent) and the hover fill in one place. Until PRIZM has one, this proposal uses `Button size="icon"` and keeps the overrides to the colour and icon size.

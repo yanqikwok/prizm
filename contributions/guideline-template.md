@@ -95,4 +95,4 @@ None.
 
 *Only what needs a decision from PRIZM's maintainers: a gap or error in an existing PRIZM guideline, or a token that doesn't exist. Delete this section if there is nothing.*
 
-- [Question.]
+- **[The question, as a question?]** [Elaboration: the context, what this proposal does for now, and what would change if the answer is yes.]

@@ -34,4 +34,4 @@ repo root; PRIZM's own rules are in `/PRIZM.md`.
 
 | Component | Source screen | Status | Issue |
 |---|---|---|---|
-| Prompt Input (`prompt-input`) | `prompt-input/` | Alpha: doc, code, registry; verify passes | |
+| Prompt Input (`prompt-input`) | `prompt-input/` | Alpha: doc, code, registry; verify passes. To do: link attachment-upload as a related component once it exists | |

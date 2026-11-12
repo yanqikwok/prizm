@@ -147,4 +147,4 @@ _Hand-written while this component is alpha. Moves to `lib/components-api.ts` wh
 
 *Only what needs a decision from PRIZM's maintainers: new tokens, naming, overlap with an existing component, or a gap in an existing PRIZM guideline. Delete this section if there is nothing.*
 
-- [Question.]
+- **[The question, as a question?]** [Elaboration: the context, what this proposal does for now, and what would change if the answer is yes.]
