@@ -129,9 +129,6 @@ built-on: [PRIZM component, or Base UI Primitive]
 
 _Hand-written while this component is alpha. Moves to `lib/components-api.ts` when promoted to stable._
 
-## Source
-
-The canonical source lives at `components/ui/[slug].tsx`. Copy it into the consumer's project at the same relative path. Required peer dependencies: `class-variance-authority`, `clsx`, `tailwind-merge` [, plus any others this component needs].
 
 ## Open questions
 
