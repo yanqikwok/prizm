@@ -9,8 +9,8 @@ built-on: [PRIZM component, or Base UI Primitive]
 <!--
   Copy this file to llms/[slug].md and fill it in. Everything above "Proposed additions" mirrors
   PRIZM's own component docs (llms/dialog.md, llms/button.md, llms/rc3/safety-actions.md): keep
-  that order and wording style. Everything under "Proposed additions" is new guidance this fork
-  adds; delete any section that doesn't apply. Delete these comments and every italic instruction
+  that order and wording style. Everything under "Proposed additions" is what reviewers need beyond that:
+  keep only the sections that apply. Delete these comments and every italic instruction
   line when done.
 
   Is this really a component? A component is ONE code-backed UI unit with its own props API.
@@ -140,26 +140,6 @@ Built from PRIZM: `[Component]`, `[Component]`.
 
 Base UI part used (only where PRIZM has no component for it): `[Part]`, or none.
 
-## Anatomy
-
-*Name the parts of the component. Don't paste crops of the source screen.*
-
-1. **[Part]**: [purpose]
-
-## Content guidelines
-
-*Label length, capitalisation, tone and truncation rules.*
-
-- [Rule.]
-
-## Do / Don't
-
-*Pair a correct and an incorrect use. Use neutral content.*
-
-| Do | Don't |
-|---|---|
-| [Correct usage] | [Incorrect usage] |
-
 ## Supplementary guidelines
 
 *Only if this component needs more than the sections above, such as streaming behaviour, density, motion, responsive behaviour or localisation. One subheading per topic. If a topic applies to more than this component, write a guideline and link to it instead.*
@@ -168,22 +148,14 @@ Base UI part used (only where PRIZM has no component for it): `[Part]`, or none.
 
 [Guidance.]
 
-## Related
-
-*Links only.*
-
-- **Patterns that use this component:** [pattern slug, or none yet]
-- **Guidelines that apply:** [guideline slug, or none yet]
-
 ## Source screen
 
 *Delete this section if the component isn't drawn from a screen.*
 
-- Screen: `[source-screen file]`, [where in the screen it appears]. Describe it in PRIZM terms; don't quote product content.
-- Product / zone: [C3 or Enterprise, and extension pack if any].
+- `[source-screen file]`: [where in the screen it appears]. Describe it in PRIZM terms; don't quote product content.
 
 ## Open questions
 
-*Anything that needs a decision from PRIZM's maintainers: new tokens, naming, overlap with an existing component.*
+*Only what needs a decision from PRIZM's maintainers: new tokens, naming, overlap with an existing component, or a gap in an existing PRIZM guideline. Delete this section if there is nothing.*
 
 - [Question.]

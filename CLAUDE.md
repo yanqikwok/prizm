@@ -46,9 +46,11 @@ In short, for each component:
 - **Mark every addition as a proposal.** A component doc uses the same frontmatter fields as
   PRIZM's own docs (`component`, `slug`, `status`, `source`, and `built-on` as in `llms/dialog.md`),
   so it reads like one of them. Reviewers can tell it is a fork addition from `status: alpha` and the
-  "Proposed additions" section, and the source screen is named in the doc's "Source screen" section.
-  Pattern and guideline docs use their own key (`pattern` or `guideline`), `slug` and `status`, plus
-  the links to the components, patterns and guidelines they relate to (see their templates).
+  "Proposed additions" section, which holds only the reuse check, optional supplementary
+  guidelines, the source screen and open questions. Pattern and guideline docs use their own key
+  (`pattern` or `guideline`), `slug` and `status`, plus the links to the components, patterns and
+  guidelines they relate to (see their templates). They have no "Proposed additions" section; any
+  open questions go in a final "Open questions" section, which is left out when empty.
 - **Additions to guidelines go in clearly labelled sections** (see the template), never by editing
   PRIZM's existing docs. If an existing PRIZM guideline seems wrong or incomplete, note it in the
   relevant component doc's "Open questions" section rather than changing it.

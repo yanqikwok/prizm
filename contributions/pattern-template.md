@@ -34,6 +34,10 @@ guidelines: [[slug]]
     4. Removing any one component breaks the solution rather than just changing its look.
   Fails 2 → component or variant. Mostly rules, no flow → guideline. One whole screen → template.
 
+  Reuse check (do it before writing, nothing to write up): look through the existing templates
+  (/c3/templates) and patterns for one that already solves this. If one is close, name it in
+  "When NOT to use" and say why this pattern is different.
+
   Components and guidelines are linked, never restated. Component specs live in the component's
   doc; rules live in the guideline.
 
@@ -146,27 +150,8 @@ guidelines: [[slug]]
 
 - [[Guideline name]](/llms/guidelines/[slug].md): [what it governs in this pattern]
 
----
-
-# Proposed additions
-
-## Reuse check
-
-*Existing PRIZM patterns, templates or compositions considered (per PRIZM.md, "Reuse before you build"), and why each doesn't fit.*
-
-| Existing | Why it doesn't fit |
-|---|---|
-| [template or composition] | [Reason] |
-
-## Source screen
-
-*Delete this section if the pattern isn't drawn from a screen.*
-
-- Screen: `[source-screen file]`, [where the pattern appears]. Describe it in PRIZM terms; don't quote product content.
-- Product / zone: [C3 or Enterprise, and extension pack if any].
-
 ## Open questions
 
-*Components this pattern needs that don't exist yet, new tokens, overlap with an existing template.*
+*Only what needs a decision from PRIZM's maintainers: components this pattern needs that don't exist yet, new tokens, overlap with an existing template. Delete this section if there is nothing.*
 
 - [Question.]

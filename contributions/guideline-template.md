@@ -19,6 +19,11 @@ applies-to: [[component-or-pattern-slug]]
   Write rules so they can be checked. "Must show the source" can be verified; "should feel
   trustworthy" cannot.
 
+  Reuse check (do it before writing, nothing to write up): read the foundation pages
+  (/docs/principles, /docs/colors, /docs/typography, /docs/surface-and-motion, /docs/icons,
+  /docs/liquid-glass) and any component doc that already states this rule. If a neighbour covers
+  part of it, point to it at the end of "Purpose and scope".
+
   Don't edit PRIZM's existing foundation pages. If one is wrong or incomplete for AI, note it in
   "Open questions" at the bottom.
 
@@ -86,27 +91,8 @@ None.
 - **Components:**
 - **External references:**
 
----
-
-# Proposed additions
-
-## Reuse check
-
-*Existing PRIZM guidance considered before writing this one (per PRIZM.md, "Reuse before you build"): foundation pages (`/docs/principles`, `/docs/colors`, `/docs/typography`, `/docs/surface-and-motion`, `/docs/icons`, `/docs/liquid-glass`) and any existing component doc that already states this rule.*
-
-| Existing guidance | Why it doesn't cover this |
-|---|---|
-| [page or llms doc] | [Reason] |
-
-## Source screen
-
-*Delete this section if the guideline isn't drawn from a screen.*
-
-- Screen: `[source-screen file]`, [where the behaviour this guideline governs appears]. Describe it in PRIZM terms; don't quote product content.
-- Product / zone: [C3 or Enterprise, and extension pack if any].
-
 ## Open questions
 
-*Gaps in PRIZM's existing guidelines, new tokens needed, or decisions for the maintainers.*
+*Only what needs a decision from PRIZM's maintainers: a gap or error in an existing PRIZM guideline, or a token that doesn't exist. Delete this section if there is nothing.*
 
 - [Question.]
