@@ -26,8 +26,8 @@ In short, for each component:
    rather than quoting product content.
 2. **Reuse check** — before writing anything, apply PRIZM's "Reuse before you build" rule: name the
    existing PRIZM components that come closest (`llms.txt`, `lib/components-api.ts`, extension packs)
-   and why each doesn't fit. If one fits with a new variant, propose the variant instead of a new
-   component.
+   and why each doesn't fit; record them in the doc's "When NOT to use" section. If one fits with a new variant,
+   propose the variant instead of a new component.
 3. **Guideline doc** — copy `contributions/component-template.md` to `llms/<slug>.md` and fill it in.
 4. **Code** — `components/ui/<slug>.tsx` (or `components/<pack>/<slug>.tsx` if it belongs to an
    extension pack), following PRIZM's component conventions exactly.
@@ -45,19 +45,18 @@ In short, for each component:
   to show its props, sub-components and guideline sections, so keep the doc in the template's shape.
 - **Mark every addition as a proposal.** A component doc uses the same frontmatter fields as
   PRIZM's own docs (`component`, `slug`, `status`, `source`, and `built-on` as in `llms/dialog.md`),
-  so it reads like one of them. Reviewers can tell it is a fork addition from `status: alpha` and the
-  "Proposed additions" section, which holds only the reuse check, optional supplementary
-  guidelines, the source screen and open questions. Pattern and guideline docs use their own key
-  (`pattern` or `guideline`), `slug` and `status`, plus the links to the components, patterns and
-  guidelines they relate to (see their templates). They have no "Proposed additions" section; any
-  open questions go in a final "Open questions" section, which is left out when empty.
+  so it reads like one of them. Reviewers can tell it is a fork addition from `status: alpha`. Pattern and guideline docs use
+  their own key (`pattern` or `guideline`), `slug` and `status`, plus the links to the components,
+  patterns and guidelines they relate to (see their templates). Every doc ends with an optional
+  "Open questions" section, left out when empty. Source screens are tracked in
+  `contributions/README.md`, not in the docs.
 - **Additions to guidelines go in clearly labelled sections** (see the template), never by editing
   PRIZM's existing docs. If an existing PRIZM guideline seems wrong or incomplete, note it in the
   relevant component doc's "Open questions" section rather than changing it.
 - **PRIZM components first, Base UI only when none fits.** Build a new component from PRIZM's
   existing ones wherever one fits (`Button`, `Field` and `FieldControl`, `Spinner`, and so on). Do
   not import Base UI directly for something a PRIZM component already wraps. Name the PRIZM
-  components you built from in the doc's reuse check.
+  components you built from in the doc's intro and `built-on` field.
 - **Behaviour from Base UI, look from PRIZM.** For a part PRIZM has no component for, build on the
   matching Base UI primitive (`@base-ui-components/react/<part>`, imported as
   `import { X as BaseX } from "@base-ui-components/react/x"`, as in `components/ui/dialog.tsx`) for
@@ -65,7 +64,7 @@ In short, for each component:
   motion — comes from PRIZM's tokens and existing component patterns, never Base UI's demo styles.
   Note what the component is built on (a PRIZM component or a Base UI primitive) in the doc's intro,
   in its `built-on` field and in the registry's `builtOn` field. If no Base UI primitive fits, say so
-  in the doc's reuse check.
+  in the doc's intro.
 - **Semantic tokens only** — no raw colours. If a component needs a token PRIZM doesn't have, note it
   in the doc's "Open questions" section instead of adding one to `styles/tokens/`.
 - `pnpm check:links` scans code only, not Markdown — check links in guideline docs by hand and only

@@ -9,9 +9,18 @@ built-on: [PRIZM component, or Base UI Primitive]
 <!--
   Copy this file to llms/[slug].md and fill it in. Everything above "Proposed additions" mirrors
   PRIZM's own component docs (llms/dialog.md, llms/button.md, llms/rc3/safety-actions.md): keep
-  that order and wording style. Everything under "Proposed additions" is what reviewers need beyond that:
-  keep only the sections that apply. Delete these comments and every italic instruction
+  that order and wording style. Keep that shape: the docs site reads this file. Delete these comments and every italic instruction
   line when done.
+
+  Reuse check (do it before writing, nothing to write up as a section): look through llms.txt,
+  lib/components-api.ts and the extension packs for the PRIZM components that come closest. Name
+  each one in "When NOT to use" with the reason it doesn't fit. Build from PRIZM components first,
+  and say in the intro and in `built-on` what this is built on; use a Base UI primitive only for
+  a part PRIZM has no component for, and if none fits, say so in the intro.
+
+  Need more guidance than the sections below (streaming, density, motion, localisation)? Add a
+  "## Supplementary guidelines" section with one ### per topic. If a topic applies to more than
+  this component, write a guideline and link to it instead.
 
   Is this really a component? A component is ONE code-backed UI unit with its own props API.
   If it only works by composing several components, it's a pattern (contributions/pattern-template.md).
@@ -123,36 +132,6 @@ _Hand-written while this component is alpha. Moves to `lib/components-api.ts` wh
 ## Source
 
 The canonical source lives at `components/ui/[slug].tsx`. Copy it into the consumer's project at the same relative path. Required peer dependencies: `class-variance-authority`, `clsx`, `tailwind-merge` [, plus any others this component needs].
-
----
-
-# Proposed additions
-
-## Reuse check
-
-*PRIZM components considered before building this one (per PRIZM.md, "Reuse before you build"), and why each doesn't fit. Then say which PRIZM components this one is built from, and use a Base UI part only where PRIZM has nothing for that part.*
-
-| PRIZM component | Why it doesn't fit |
-|---|---|
-| `[Component]` | [Reason] |
-
-Built from PRIZM: `[Component]`, `[Component]`.
-
-Base UI part used (only where PRIZM has no component for it): `[Part]`, or none.
-
-## Supplementary guidelines
-
-*Only if this component needs more than the sections above, such as streaming behaviour, density, motion, responsive behaviour or localisation. One subheading per topic. If a topic applies to more than this component, write a guideline and link to it instead.*
-
-### [Topic]
-
-[Guidance.]
-
-## Source screen
-
-*Delete this section if the component isn't drawn from a screen.*
-
-- `[source-screen file]`: [where in the screen it appears]. Describe it in PRIZM terms; don't quote product content.
 
 ## Open questions
 

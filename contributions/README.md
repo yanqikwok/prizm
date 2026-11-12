@@ -23,7 +23,7 @@ repo root; PRIZM's own rules are in `/PRIZM.md`.
 2. [ ] Every state of the component extracted from the source screen, from the PNG and from the
    HTML export, which can carry states the PNG doesn't show (e.g. a bundled prototype's code). List them, agree
    which to keep, drop or add, and carry them into the doc's "States" section and the code
-3. [ ] Reuse check written (which PRIZM components were considered, and why they don't fit)
+3. [ ] Reuse check done (closest PRIZM components named in "When NOT to use", with why they don't fit)
 4. [ ] Guideline doc at `llms/<slug>.md`, from the template
 5. [ ] Code at `components/ui/<slug>.tsx`
 6. [ ] Registry entry in `lib/components-registry.ts` with `status: "alpha"`
